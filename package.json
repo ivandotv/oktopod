@@ -69,5 +69,12 @@
     "typedoc": "^0.22.10",
     "typedoc-plugin-markdown": "^3.11.7",
     "xstate": "^4.26.1"
+  },
+  "dependencies": {
+    "mitt": "^3.0.0",
+    "tiny-invariant": "^1.2.0"
+  },
+  "peerDependencies": {
+    "xstate": "^4.26.1"
   }
 }
