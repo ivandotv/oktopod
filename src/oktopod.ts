@@ -14,7 +14,8 @@ function normalizeListener(cb: (data: Payload) => void): () => void {
     cb(data)
   }
 }
-
+//TODO - warn ako pokusavmo da posaljemo event servisu koji je stao?
+//service.status === InterpteterStatus.Stopped
 export class Oktopod {
   protected bus: ReturnType<typeof mitt>
 

@@ -4,8 +4,8 @@ import { factory } from './utils'
 describe('Register listener', () => {
   test.only('Temp Test', () => {
     const bus = factory()
-    const listener = (data: Payload): void => {
-      console.log(data)
+    const listener = (payload: Payload<number>): void => {
+      console.log(payload.data)
       console.log('this ', this)
     }
     const event = 'boom!'
