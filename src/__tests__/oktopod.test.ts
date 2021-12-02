@@ -1,6 +1,24 @@
+import { Payload } from '~/oktopod'
 import { factory } from './utils'
 
 describe('Register listener', () => {
+  test.only('Temp Test', () => {
+    const bus = factory()
+    const listener = (data: Payload): void => {
+      console.log(data)
+      console.log('this ', this)
+    }
+    const event = 'boom!'
+    const data = { foo: 'bar' }
+
+    // bus.on(event, listener)
+    bus.on('*', listener)
+    bus.emit(event)
+
+    expect(true).toBe(true)
+    // expect(listener).toHaveBeenCalledTimes(1)
+    // expect(listener).toHaveBeenCalledWith({ event, data })
+  })
   test('Register and call listener', () => {
     const bus = factory()
     const listener = jest.fn()
@@ -52,7 +70,7 @@ describe('Register listener', () => {
   })
 })
 
-describe('Unregister listener', () => {
+describe.skip('Unregister listener', () => {
   test('Unregiser listener', () => {
     const bus = factory()
     const listener = jest.fn()
