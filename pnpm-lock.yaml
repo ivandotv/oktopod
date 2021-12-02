@@ -26,6 +26,7 @@ specifiers:
   prettier: ^2.5.0
   shx: ^0.3.3
   tiny-invariant: ^1.2.0
+  tiny-warning: ^1.0.3
   typedoc: ^0.22.10
   typedoc-plugin-markdown: ^3.11.7
   xstate: ^4.26.1
@@ -33,6 +34,7 @@ specifiers:
 dependencies:
   mitt: 3.0.0
   tiny-invariant: 1.2.0
+  tiny-warning: 1.0.3
 
 devDependencies:
   '@babel/preset-env': 7.16.4
@@ -7696,6 +7698,10 @@ packages:
 
   /tiny-invariant/1.2.0:
     resolution: {integrity: sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==}
+    dev: false
+
+  /tiny-warning/1.0.3:
+    resolution: {integrity: sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==}
     dev: false
 
   /tmp/0.0.33:

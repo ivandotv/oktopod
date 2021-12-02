@@ -73,7 +73,8 @@
   },
   "dependencies": {
     "mitt": "^3.0.0",
-    "tiny-invariant": "^1.2.0"
+    "tiny-invariant": "^1.2.0",
+    "tiny-warning": "^1.0.3"
   },
   "peerDependencies": {
     "xstate": "^4.26.1"
