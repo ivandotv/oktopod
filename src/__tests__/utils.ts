@@ -1,5 +1,9 @@
 import { Oktopod } from '~/oktopod'
 
-export function factory(): Oktopod {
-  return new Oktopod()
+export function factory(): any {
+  return {
+    bus() {
+      return new Oktopod()
+    }
+  }
 }

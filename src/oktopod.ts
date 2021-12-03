@@ -1,19 +1,19 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { Interpreter } from 'xstate'
+import { EventObject, Interpreter, InterpreterStatus } from 'xstate'
 
-export type Payload<TData = unknown> = {
+export type EventPayload<TData = unknown> = {
   event: string
   data: TData
 }
 
-function normalizeListener(cb: (data: Payload) => void): () => void {
+function normalizeListener(cb: (data: EventPayload) => void): () => void {
   return (...args: any[]): void => {
-    console.log('wrapper', args)
     const data = args.length > 0 ? args[args.length - 1] : undefined
     cb(data)
   }
 }
+
 //TODO - warn ako pokusavmo da posaljemo event servisu koji je stao?
 //service.status === InterpteterStatus.Stopped
 export class Oktopod {
@@ -24,12 +24,21 @@ export class Oktopod {
     Map<string, () => void>
   >
 
+  protected idToMachine: Map<string, Interpreter<any, any, any>>
+
+  protected listenerToWrapper: Map<
+    (...args: any[]) => void,
+    (...args: any[]) => void
+  >
+
   constructor() {
     this.bus = mitt()
     this.machineToEvents = new Map()
+    this.idToMachine = new Map()
+    this.listenerToWrapper = new Map()
   }
 
-  on(event: string, listener: (payload: Payload) => void): () => void
+  on(event: string, listener: (payload: EventPayload) => void): () => void
 
   on(
     event: string,
@@ -39,7 +48,9 @@ export class Oktopod {
 
   on(
     event: string,
-    listener: Interpreter<any, any, any, any> | ((payload: Payload) => void),
+    listener:
+      | Interpreter<any, any, any, any>
+      | ((payload: EventPayload) => void),
     send?: string
   ): () => void {
     if (listener instanceof Interpreter) {
@@ -63,9 +74,15 @@ export class Oktopod {
         }
       } else {
         this.machineToEvents.set(listener, new Map())
+        this.idToMachine.set(listener.id, listener)
       }
 
-      const machineListener = normalizeListener((data: Payload) => {
+      const machineListener = normalizeListener((data: EventPayload) => {
+        console.log('accepts ', listener.state.nextEvents)
+        console.log('will send ', send)
+        console.log('is machine stopped ', listener.status)
+        console.log('interpreter status ', InterpreterStatus)
+
         listener.send(send, data)
       })
 
@@ -80,12 +97,14 @@ export class Oktopod {
       return unregister
     }
 
-    const regularListener = normalizeListener(listener)
+    const wrappedListener = normalizeListener(listener)
 
-    this.bus.on(event, regularListener)
+    this.listenerToWrapper.set(listener, wrappedListener)
+    this.bus.on(event, wrappedListener)
 
     return () => {
-      this.bus.off(event, regularListener)
+      this.bus.off(event, wrappedListener)
+      this.listenerToWrapper.delete(listener)
     }
   }
 
@@ -99,25 +118,21 @@ export class Oktopod {
         const unregisterHandler = listenerData.get(event)
         unregisterHandler && unregisterHandler()
         listenerData.delete(event)
-        if (listenerData.size === 0) {
-          //there is no more events registered for the machine
-          this.machineToEvents.delete(listener)
-        }
       }
 
       return
     }
-    this.bus.off(event, listener)
+
+    const listenerWrapper = this.listenerToWrapper.get(listener)
+    if (listenerWrapper) {
+      this.bus.off(event, listenerWrapper)
+    }
   }
 
-  offAll(event: string): void {
+  clear(event: string): void {
     this.machineToEvents.forEach(
-      (data, machine: Interpreter<any, any, any>) => {
+      (data, _machine: Interpreter<any, any, any>) => {
         data.delete(event)
-        if (!data.size) {
-          //machine has no more events remove reference to the machine
-          this.machineToEvents.delete(machine)
-        }
       }
     )
 
@@ -130,18 +145,25 @@ export class Oktopod {
       eventData.forEach((unsubscribe) => unsubscribe())
       this.machineToEvents.delete(machine)
     }
+    this.idToMachine.delete(machine.id)
+  }
+
+  getMachineById<
+    TContext = any,
+    TStateSchema = any,
+    TEvent extends EventObject = EventObject
+  >(id: string): Interpreter<TContext, TStateSchema, TEvent> | undefined {
+    return this.idToMachine.get(id)
   }
 
   emit(event: string, data: unknown): void {
     this.bus.emit(event, { event, data })
   }
 
-  clear(): void {
+  destroy(): void {
     this.bus.all.clear()
     this.machineToEvents.clear()
-  }
-
-  destroy(): void {
-    this.clear()
+    this.idToMachine.clear()
+    this.listenerToWrapper.clear()
   }
 }
