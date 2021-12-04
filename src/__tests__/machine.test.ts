@@ -206,7 +206,6 @@ describe('Machine listener', () => {
     const data = { foo: 'bar' }
     const machine = createTestMachine('one')
     const service = interpret(machine)
-
     service.start()
 
     const machineTwo = createTestMachine('two')
@@ -214,8 +213,12 @@ describe('Machine listener', () => {
     serviceTwo.start()
 
     bus.on(event, service, 'EVENT_A')
+    bus.on(event, serviceTwo, 'EVENT_A')
+    bus.clear(event)
+
     bus.emit(event, data)
 
-    expect(service.state.context.event).toStrictEqual({ event, data })
+    expect(service.state.context.event).toBe(null)
+    expect(serviceTwo.state.context.event).toBe(null)
   })
 })
