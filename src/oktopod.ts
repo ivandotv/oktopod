@@ -1,6 +1,6 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { EventObject, Interpreter, InterpreterStatus } from 'xstate'
+import { Interpreter, InterpreterStatus } from 'xstate'
 
 export type EventPayload<TData = unknown> = {
   event: string
@@ -14,8 +14,6 @@ function normalizeListener(cb: (data: EventPayload) => void): () => void {
   }
 }
 
-//TODO - warn ako pokusavmo da posaljemo event servisu koji je stao?
-//service.status === InterpteterStatus.Stopped
 export class Oktopod {
   protected bus: ReturnType<typeof mitt>
 
@@ -43,7 +41,7 @@ export class Oktopod {
   on(
     event: string,
     listener: Interpreter<any, any, any, any>,
-    send?: string
+    send: string
   ): () => void
 
   on(
@@ -65,7 +63,7 @@ export class Oktopod {
         const unregisterHandler = listenerData.get(event)
         if (unregisterHandler) {
           if (__DEV__) {
-            console.log(
+            console.warn(
               `Event: ${event} is already registered for service: ${listener.id}`
             )
           }
@@ -78,10 +76,25 @@ export class Oktopod {
       }
 
       const machineListener = normalizeListener((data: EventPayload) => {
-        console.log('accepts ', listener.state.nextEvents)
-        console.log('will send ', send)
-        console.log('is machine stopped ', listener.status)
-        console.log('interpreter status ', InterpreterStatus)
+        if (listener.status !== InterpreterStatus.Running) {
+          if (__DEV__) {
+            console.warn(
+              `Event ${data.event} not sent to service: ${listener.id} because the service is not running`
+            )
+          }
+
+          return
+        }
+
+        if (listener.state.nextEvents.findIndex((evt) => evt === send) < 0) {
+          if (__DEV__) {
+            console.warn(
+              `Event ${data.event} not sent to service ${listener.id} because the service does not accept event: ${send}`
+            )
+          }
+
+          return
+        }
 
         listener.send(send, data)
       })
@@ -139,31 +152,7 @@ export class Oktopod {
     this.bus.off(event)
   }
 
-  removeMachine(machine: Interpreter<any, any, any>): void {
-    const eventData = this.machineToEvents.get(machine)
-    if (eventData) {
-      eventData.forEach((unsubscribe) => unsubscribe())
-      this.machineToEvents.delete(machine)
-    }
-    this.idToMachine.delete(machine.id)
-  }
-
-  getMachineById<
-    TContext = any,
-    TStateSchema = any,
-    TEvent extends EventObject = EventObject
-  >(id: string): Interpreter<TContext, TStateSchema, TEvent> | undefined {
-    return this.idToMachine.get(id)
-  }
-
-  emit(event: string, data: unknown): void {
+  emit(event: string, data?: unknown): void {
     this.bus.emit(event, { event, data })
-  }
-
-  destroy(): void {
-    this.bus.all.clear()
-    this.machineToEvents.clear()
-    this.idToMachine.clear()
-    this.listenerToWrapper.clear()
   }
 }
