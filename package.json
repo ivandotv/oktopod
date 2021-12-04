@@ -1,16 +1,16 @@
 {
-  "name": "untilted",
+  "name": "oktopod",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
   "author": "ivandotv",
   "license": "MIT",
-  "main": "./dist/prod/untilted.js",
-  "umd": "./dist/prod/untilted.umd.js",
+  "main": "./dist/prod/oktopod.js",
+  "umd": "./dist/prod/oktopod.umd.js",
   "exports": {
-    "development": "./dist/dev/untilted.esm.js",
-    "import": "./dist/prod/untilted.esm.js",
-    "require": "./dist/prod/untilted.js"
+    "development": "./dist/dev/oktopod.esm.js",
+    "import": "./dist/prod/oktopod.esm.js",
+    "require": "./dist/prod/oktopod.js"
   },
   "types": "./dist/index.d.ts",
   "files": [
@@ -37,13 +37,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ivandotv/untilted.git"
+    "url": "git+https://github.com/ivandotv/oktopod.git"
   },
   "bugs": {
-    "url": "https://github.com/ivandotv/untilted/issues"
+    "url": "https://github.com/ivandotv/oktopod/issues"
   },
-  "homepage": "https://github.com/ivandotv/untilted#readme",
+  "homepage": "https://github.com/ivandotv/oktopod#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
     "@changesets/cli": "^2.18.1",
     "@types/jest": "^27.0.3",
@@ -68,6 +69,14 @@
     "shx": "^0.3.3",
     "typedoc": "^0.22.10",
     "typedoc-plugin-markdown": "^3.11.7",
+    "xstate": "^4.26.1"
+  },
+  "dependencies": {
+    "mitt": "^3.0.0",
+    "tiny-invariant": "^1.2.0",
+    "tiny-warning": "^1.0.3"
+  },
+  "peerDependencies": {
     "xstate": "^4.26.1"
   }
 }

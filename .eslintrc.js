@@ -31,9 +31,11 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'jest/no-done-callback': 'off',
+    'jest/no-conditional-expect': 'off',
     'tsdoc/syntax': 'warn',
     // 'no-unused-vars': 'off',
-    // '@typescript-eslint/no-unused-vars': ['off']
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'generator-star-spacing': ['error', { before: false, after: true }],
     'space-before-function-paren': 'off',
     'no-dupe-class-members': 'off',
@@ -45,6 +47,7 @@ module.exports = {
       'error',
       { blankLine: 'always', prev: '*', next: 'return' }
     ],
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': [
       'error',
       {
