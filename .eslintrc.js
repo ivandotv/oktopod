@@ -31,6 +31,8 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'jest/no-done-callback': 'off',
+    'jest/no-conditional-expect': 'off',
     'tsdoc/syntax': 'warn',
     // 'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
