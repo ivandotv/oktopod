@@ -16,6 +16,19 @@ describe('Machine listener', () => {
     expect(service.state.context.event).toStrictEqual({ event, data })
   })
 
+  test('Machine can only register once for a specific event', () => {
+    const bus = createBus()
+    const event = 'event'
+    const machine = createTestMachine('foo')
+    const service = interpret(machine)
+    service.start()
+
+    const unsubscribe = bus.on(event, service, 'EVENT_A')
+    const unsubscribeTwo = bus.on(event, service, 'EVENT_A')
+
+    expect(unsubscribe).toBe(unsubscribeTwo)
+  })
+
   test('Emit event with no data', () => {
     const bus = createBus()
     const event = 'event'
@@ -83,6 +96,21 @@ describe('Machine listener', () => {
     const service = interpret(machine)
     service.start()
     service.stop()
+
+    bus.on(event, service, 'EVENT_A')
+    bus.emit(event, data)
+
+    expect(service.state.context.event).toBe(null)
+  })
+
+  test('Do not send event to a machine that do not accept particular event', () => {
+    const bus = createBus()
+    const event = 'event'
+    const data = { foo: 'bar' }
+    const machine = createTestMachine('foo')
+    const service = interpret(machine)
+    service.start()
+    service.send('DONE')
 
     bus.on(event, service, 'EVENT_A')
     bus.emit(event, data)
