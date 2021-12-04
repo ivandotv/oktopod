@@ -62,6 +62,7 @@ export class Oktopod {
       if (listenerData) {
         const unregisterHandler = listenerData.get(event)
         if (unregisterHandler) {
+          /* istanbul ignore next */
           if (__DEV__) {
             console.warn(
               `Event: ${event} is already registered for service: ${listener.id}`
@@ -77,6 +78,7 @@ export class Oktopod {
 
       const machineListener = normalizeListener((data: EventPayload) => {
         if (listener.status !== InterpreterStatus.Running) {
+          /* istanbul ignore next */
           if (__DEV__) {
             console.warn(
               `Event ${data.event} not sent to service: ${listener.id} because the service is not running`
@@ -87,6 +89,7 @@ export class Oktopod {
         }
 
         if (listener.state.nextEvents.findIndex((evt) => evt === send) < 0) {
+          /* istanbul ignore next */
           if (__DEV__) {
             console.warn(
               `Event ${data.event} not sent to service ${listener.id} because the service does not accept event: ${send}`
@@ -143,11 +146,9 @@ export class Oktopod {
   }
 
   clear(event: string): void {
-    this.machineToEvents.forEach(
-      (data, _machine: Interpreter<any, any, any>) => {
-        data.delete(event)
-      }
-    )
+    this.machineToEvents.forEach((data) => {
+      data.delete(event)
+    })
 
     this.bus.off(event)
   }
