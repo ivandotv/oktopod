@@ -40,7 +40,8 @@ const jestConfig = {
     '@babel/preset-typescript'
   ],
   ignore: ['node_modules'],
-  sourceMaps: 'inline'
+  sourceMaps: 'inline',
+  auxiliaryCommentBefore: ' istanbul ignore next '
 }
 
 module.exports = process.env.NODE_ENV === 'test' ? jestConfig : config
