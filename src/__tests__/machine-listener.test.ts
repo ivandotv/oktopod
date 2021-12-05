@@ -20,13 +20,16 @@ describe('Machine listener', () => {
   test('Machine can only register once for a specific event', () => {
     const bus = createBus()
     const event = 'event'
+    const data = { foo: 'foo' }
     const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
 
     const unsubscribe = bus.on(event, service, 'EVENT_A')
-    const unsubscribeTwo = bus.on(event, service, 'EVENT_A')
+    const unsubscribeTwo = bus.on(event, service, 'EVENT_B')
+    bus.emit(event, data)
 
+    expect(service.state.context.type).toBe('EVENT_A')
     expect(unsubscribe).toBe(unsubscribeTwo)
   })
 

@@ -7,7 +7,10 @@ export function createBus() {
 }
 
 const model = createModel(
-  { event: null as EventPayload | null },
+  {
+    event: null as EventPayload | null,
+    type: null as 'EVENT_A' | 'EVENT_B' | null
+  },
   {
     events: {
       EVENT_A: (data: EventPayload) => data,
@@ -23,7 +26,7 @@ export function createMachine(id: string) {
     strict: true,
     preserveActionOrder: true,
     initial: 'idle',
-    context: { event: null },
+    context: model.initialContext,
     on: {
       DONE: 'done'
     },
@@ -33,13 +36,24 @@ export function createMachine(id: string) {
           EVENT_A: {
             actions: model.assign((_ctx, evt) => {
               return {
-                event: { data: evt.data, event: evt.event }
+                event: { data: evt.data, event: evt.event },
+                type: 'EVENT_A'
+              }
+            })
+          },
+          EVENT_B: {
+            actions: model.assign((_ctx, evt) => {
+              return {
+                event: { data: evt.data, event: evt.event },
+                type: 'EVENT_B'
               }
             })
           }
         }
       },
-      done: {}
+      done: {
+        type: 'final'
+      }
     }
   })
 }
