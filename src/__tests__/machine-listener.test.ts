@@ -1,12 +1,12 @@
 import { interpret } from 'xstate'
-import { createBus, createTestMachine } from './utils'
+import { createBus, createMachine } from './utils'
 
 describe('Machine listener', () => {
   test('Register machine for specific event', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -19,7 +19,7 @@ describe('Machine listener', () => {
   test('Machine can only register once for a specific event', () => {
     const bus = createBus()
     const event = 'event'
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -32,7 +32,7 @@ describe('Machine listener', () => {
   test('Emit event with no data', () => {
     const bus = createBus()
     const event = 'event'
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -49,11 +49,11 @@ describe('Machine listener', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createTestMachine('one')
+    const machine = createMachine('one')
     const service = interpret(machine)
     service.start()
 
-    const machineTwo = createTestMachine('two')
+    const machineTwo = createMachine('two')
     const serviceTwo = interpret(machineTwo)
     serviceTwo.start()
 
@@ -71,7 +71,7 @@ describe('Machine listener', () => {
     const data = { foo: 'bar' }
     const eventTwo = 'event_two'
     const dataTwo = { foo_two: 'bar_two' }
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -92,7 +92,7 @@ describe('Machine listener', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
     service.stop()
@@ -107,7 +107,7 @@ describe('Machine listener', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createTestMachine('foo')
+    const machine = createMachine('foo')
     const service = interpret(machine)
     service.start()
     service.send('DONE')
@@ -123,12 +123,12 @@ describe('Machine listener', () => {
       const bus = createBus()
       const event = 'event'
       const data = { foo: 'bar' }
-      const machine = createTestMachine('foo')
+      const machine = createMachine('foo')
       const service = interpret(machine)
 
       service.start()
 
-      const machineTwo = createTestMachine('foo')
+      const machineTwo = createMachine('foo')
       const serviceTwo = interpret(machineTwo)
       serviceTwo.start()
 
@@ -142,12 +142,12 @@ describe('Machine listener', () => {
     test('Unregister machine for all events', () => {
       const bus = createBus()
       const data = { foo: 'bar' }
-      const machine = createTestMachine('foo')
+      const machine = createMachine('foo')
       const service = interpret(machine)
 
       service.start()
 
-      const machineTwo = createTestMachine('foo')
+      const machineTwo = createMachine('foo')
       const serviceTwo = interpret(machineTwo)
       serviceTwo.start()
 
@@ -163,12 +163,12 @@ describe('Machine listener', () => {
       const bus = createBus()
       const event = 'event'
       const data = { foo: 'bar' }
-      const machine = createTestMachine('foo')
+      const machine = createMachine('foo')
       const service = interpret(machine)
 
       service.start()
 
-      const machineTwo = createTestMachine('foo')
+      const machineTwo = createMachine('foo')
       const serviceTwo = interpret(machineTwo)
       serviceTwo.start()
 
@@ -183,12 +183,12 @@ describe('Machine listener', () => {
       const bus = createBus()
       const event = 'event'
       const data = { foo: 'bar' }
-      const machine = createTestMachine('foo')
+      const machine = createMachine('foo')
       const service = interpret(machine)
 
       service.start()
 
-      const machineTwo = createTestMachine('foo')
+      const machineTwo = createMachine('foo')
       const serviceTwo = interpret(machineTwo)
       serviceTwo.start()
 
@@ -204,11 +204,11 @@ describe('Machine listener', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createTestMachine('one')
+    const machine = createMachine('one')
     const service = interpret(machine)
     service.start()
 
-    const machineTwo = createTestMachine('two')
+    const machineTwo = createMachine('two')
     const serviceTwo = interpret(machineTwo)
     serviceTwo.start()
 

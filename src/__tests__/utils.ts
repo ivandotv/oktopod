@@ -17,7 +17,7 @@ const model = createModel(
   }
 )
 
-export function createTestMachine(id: string) {
+export function createMachine(id: string) {
   return model.createMachine({
     id,
     strict: true,

@@ -1,6 +1,6 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { Interpreter, InterpreterStatus } from 'xstate'
+import { EventObject, Interpreter, InterpreterStatus } from 'xstate'
 
 export type EventPayload<TData = unknown> = {
   event: string
@@ -17,12 +17,12 @@ function normalizeListener(cb: (data: EventPayload) => void): () => void {
 export class Oktopod {
   protected bus: ReturnType<typeof mitt>
 
-  protected machineToEvents: Map<
+  protected serviceToEvents: Map<
     Interpreter<any, any, any>,
     Map<string, () => void>
   >
 
-  protected idToMachine: Map<string, Interpreter<any, any, any>>
+  protected idToService: Map<string, Interpreter<any, any, any>>
 
   protected listenerToWrapper: Map<
     (...args: any[]) => void,
@@ -31,8 +31,8 @@ export class Oktopod {
 
   constructor() {
     this.bus = mitt()
-    this.machineToEvents = new Map()
-    this.idToMachine = new Map()
+    this.serviceToEvents = new Map()
+    this.idToService = new Map()
     this.listenerToWrapper = new Map()
   }
 
@@ -57,7 +57,7 @@ export class Oktopod {
         send,
         `When using machine as listener, please provide send type`
       )
-      const listenerData = this.machineToEvents.get(listener)
+      const listenerData = this.serviceToEvents.get(listener)
 
       if (listenerData) {
         const unregisterHandler = listenerData.get(event)
@@ -72,8 +72,7 @@ export class Oktopod {
           return unregisterHandler
         }
       } else {
-        this.machineToEvents.set(listener, new Map())
-        this.idToMachine.set(listener.id, listener)
+        this._register(listener)
       }
 
       const machineListener = normalizeListener((data: EventPayload) => {
@@ -108,7 +107,7 @@ export class Oktopod {
 
       this.bus.on(event, machineListener)
       /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      this.machineToEvents.get(listener)!.set(event, unregister)
+      this.serviceToEvents.get(listener)!.set(event, unregister)
 
       return unregister
     }
@@ -129,7 +128,7 @@ export class Oktopod {
     listener: Interpreter<any, any, any> | ((...args: any[]) => void)
   ): void {
     if (listener instanceof Interpreter) {
-      const listenerData = this.machineToEvents.get(listener)
+      const listenerData = this.serviceToEvents.get(listener)
       if (listenerData) {
         const unregisterHandler = listenerData.get(event)
         unregisterHandler && unregisterHandler()
@@ -146,7 +145,7 @@ export class Oktopod {
   }
 
   clear(event: string): void {
-    this.machineToEvents.forEach((data) => {
+    this.serviceToEvents.forEach((data) => {
       data.delete(event)
     })
 
@@ -155,5 +154,41 @@ export class Oktopod {
 
   emit(event: string, data?: unknown): void {
     this.bus.emit(event, { event, data })
+  }
+
+  register(service: Interpreter<any, any, any>): () => void {
+    this._register(service)
+
+    return () => {
+      this._unregister(service)
+    }
+  }
+
+  private _register(service: Interpreter<any, any, any>): void {
+    if (!this.serviceToEvents.get(service)) {
+      this.serviceToEvents.set(service, new Map())
+      this.idToService.set(service.id, service)
+    }
+  }
+
+  unregister(service: Interpreter<any, any, any>): void {
+    this._unregister(service)
+  }
+
+  private _unregister(service: Interpreter<any, any, any>): void {
+    const eventData = this.serviceToEvents.get(service)
+    if (eventData) {
+      eventData.forEach((unsubscribe) => unsubscribe())
+      this.serviceToEvents.delete(service)
+    }
+    this.idToService.delete(service.id)
+  }
+
+  getServiceById<
+    TContext = any,
+    TStateSchema = any,
+    TEvent extends EventObject = EventObject
+  >(id: string): Interpreter<TContext, TStateSchema, TEvent> | undefined {
+    return this.idToService.get(id)
   }
 }
