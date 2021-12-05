@@ -1,6 +1,6 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { EventObject, Interpreter, InterpreterStatus } from 'xstate'
+import { EventFrom, EventObject, Interpreter, InterpreterStatus } from 'xstate'
 
 export type EventPayload<TData = unknown> = {
   event: string
@@ -38,20 +38,37 @@ export class Oktopod {
 
   on(event: string, listener: (payload: EventPayload) => void): () => void
 
-  on(
+  on<
+    TService extends Interpreter<any, any, any, any> = Interpreter<
+      any,
+      any,
+      any,
+      any
+    >
+  >(
     event: string,
-    listener: Interpreter<any, any, any, any>,
-    send: string
+    listener: TService,
+    send: Pick<EventFrom<TService>, 'type'>['type']
   ): (unregister?: boolean) => void
 
-  on(
+  on<
+    TService extends Interpreter<any, any, any, any> = Interpreter<
+      any,
+      any,
+      any,
+      any
+    >
+  >(
     event: string,
-    listener:
-      | Interpreter<any, any, any, any>
-      | ((payload: EventPayload) => void),
-    send?: string
+    listener: TService | ((payload: EventPayload) => void),
+    send?: Pick<EventFrom<TService>, 'type'>['type']
   ): () => void | ((unregister?: boolean) => void) {
     if (listener instanceof Interpreter) {
+      invariant(
+        send,
+        `When using machine as listener, please provide send type`
+      )
+
       return this.serviceOn(event, listener, send)
     }
 
@@ -65,13 +82,18 @@ export class Oktopod {
     }
   }
 
-  protected serviceOn(
+  protected serviceOn<
+    TService extends Interpreter<any, any, any> = Interpreter<
+      any,
+      any,
+      any,
+      any
+    >
+  >(
     event: string,
-    listener: Interpreter<any, any, any, any>,
-    send?: string
+    listener: TService,
+    send: Pick<EventFrom<TService>, 'type'>['type']
   ): (unregister?: boolean) => void {
-    invariant(send, `When using machine as listener, please provide send type`)
-
     const eventData = this.serviceToEvents.get(listener)
 
     if (eventData) {
