@@ -139,12 +139,7 @@ export class Oktopod {
     listener: Interpreter<any, any, any> | ((...args: any[]) => void)
   ): void {
     if (listener instanceof Interpreter) {
-      const listenerData = this.serviceToEvents.get(listener)
-      if (listenerData) {
-        const unregisterHandler = listenerData.get(event)
-        unregisterHandler && unregisterHandler()
-        listenerData.delete(event)
-      }
+      this.serviceOff(event, listener)
 
       return
     }
@@ -152,6 +147,18 @@ export class Oktopod {
     const listenerWrapper = this.listenerToWrapper.get(listener)
     if (listenerWrapper) {
       this.bus.off(event, listenerWrapper)
+    }
+  }
+
+  protected serviceOff(
+    event: string,
+    listener: Interpreter<any, any, any>
+  ): void {
+    const listenerData = this.serviceToEvents.get(listener)
+    if (listenerData) {
+      const unregisterHandler = listenerData.get(event)
+      unregisterHandler && unregisterHandler()
+      listenerData.delete(event)
     }
   }
 
