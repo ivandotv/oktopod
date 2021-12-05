@@ -42,7 +42,7 @@ export class Oktopod {
     event: string,
     listener: Interpreter<any, any, any, any>,
     send: string
-  ): () => void
+  ): (unregister?: boolean) => void
 
   on(
     event: string,
@@ -50,70 +50,12 @@ export class Oktopod {
       | Interpreter<any, any, any, any>
       | ((payload: EventPayload) => void),
     send?: string
-  ): () => void {
+  ): () => void | ((unregister?: boolean) => void) {
     if (listener instanceof Interpreter) {
-      //we have machine service
-      invariant(
-        send,
-        `When using machine as listener, please provide send type`
-      )
-      const listenerData = this.serviceToEvents.get(listener)
-
-      if (listenerData) {
-        const unregisterHandler = listenerData.get(event)
-        if (unregisterHandler) {
-          /* istanbul ignore next */
-          if (__DEV__) {
-            console.warn(
-              `Event: ${event} is already registered for service: ${listener.id}`
-            )
-          }
-
-          return unregisterHandler
-        }
-      } else {
-        this._register(listener)
-      }
-
-      const machineListener = normalizeListener((data: EventPayload) => {
-        if (listener.status !== InterpreterStatus.Running) {
-          /* istanbul ignore next */
-          if (__DEV__) {
-            console.warn(
-              `Event ${data.event} not sent to service: ${listener.id} because the service is not running`
-            )
-          }
-
-          return
-        }
-
-        if (listener.state.nextEvents.findIndex((evt) => evt === send) < 0) {
-          /* istanbul ignore next */
-          if (__DEV__) {
-            console.warn(
-              `Event ${data.event} not sent to service ${listener.id} because the service does not accept event: ${send}`
-            )
-          }
-
-          return
-        }
-
-        listener.send(send, data)
-      })
-
-      const unregister = (): void => {
-        this.bus.off(event, machineListener)
-      }
-
-      this.bus.on(event, machineListener)
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      this.serviceToEvents.get(listener)!.set(event, unregister)
-
-      return unregister
+      return this.serviceOn(event, listener, send)
     }
 
     const wrappedListener = normalizeListener(listener)
-
     this.listenerToWrapper.set(listener, wrappedListener)
     this.bus.on(event, wrappedListener)
 
@@ -121,6 +63,75 @@ export class Oktopod {
       this.bus.off(event, wrappedListener)
       this.listenerToWrapper.delete(listener)
     }
+  }
+
+  protected serviceOn(
+    event: string,
+    listener: Interpreter<any, any, any, any>,
+    send?: string
+  ): (unregister?: boolean) => void {
+    invariant(send, `When using machine as listener, please provide send type`)
+
+    const eventData = this.serviceToEvents.get(listener)
+
+    if (eventData) {
+      const unregisterHandler = eventData.get(event)
+      if (unregisterHandler) {
+        /* istanbul ignore next */
+        if (__DEV__) {
+          console.warn(
+            `Event: ${event} is already registered for service: ${listener.id}`
+          )
+        }
+
+        return unregisterHandler
+      }
+    } else {
+      this._register(listener)
+    }
+
+    const machineListener = normalizeListener((data: EventPayload) => {
+      if (listener.status !== InterpreterStatus.Running) {
+        /* istanbul ignore next */
+        if (__DEV__) {
+          console.warn(
+            `Event ${data.event} not sent to service: ${listener.id} because the service is not running`
+          )
+        }
+
+        return
+      }
+
+      if (listener.state.nextEvents.findIndex((evt) => evt === send) < 0) {
+        /* istanbul ignore next */
+        if (__DEV__) {
+          console.warn(
+            `Event ${data.event} not sent to service ${listener.id} because the service does not accept event: ${send}`
+          )
+        }
+
+        return
+      }
+
+      listener.send(send, data)
+    })
+
+    const unsubscribe = (unregister = false): void => {
+      if (unregister) {
+        this._unregister(listener)
+
+        return
+      }
+      this.bus.off(event, machineListener)
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      this.serviceToEvents.get(listener)!.delete(event)
+    }
+
+    this.bus.on(event, machineListener)
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    this.serviceToEvents.get(listener)!.set(event, unsubscribe)
+
+    return unsubscribe
   }
 
   off(

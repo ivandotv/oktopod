@@ -14,6 +14,7 @@ describe('Machine listener', () => {
     bus.emit(event, data)
 
     expect(service.state.context.event).toStrictEqual({ event, data })
+    expect(bus.getServiceById(service.id)).toBe(service)
   })
 
   test('Machine can only register once for a specific event', () => {
@@ -157,6 +158,27 @@ describe('Machine listener', () => {
       bus.emit('bar', data)
 
       expect(service.state.context.event).toBe(null)
+    })
+
+    test('Remove listener and unregister machine', () => {
+      const bus = createBus()
+      const event = 'foo'
+      const data = { foo: 'bar' }
+      const machine = createMachine('foo')
+      const service = interpret(machine)
+
+      service.start()
+
+      const machineTwo = createMachine('foo')
+      const serviceTwo = interpret(machineTwo)
+      serviceTwo.start()
+
+      const unsubscribe = bus.on('*', service, 'EVENT_A')
+      unsubscribe(true)
+      bus.emit(event, data)
+
+      expect(service.state.context.event).toBe(null)
+      expect(bus.getServiceById(service.id)).toBeUndefined()
     })
 
     test('Unregister machine for specific event via returned unsubscribe function', () => {
