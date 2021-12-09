@@ -28,11 +28,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install pnpm
-        run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
-
       - name: Install dependencies
-        run: pnpm install
+        uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.23.6
+          run_install: true
 
       - name: Lint source
         run: |
@@ -56,7 +56,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: 'Publish to NPM'
-        if: github.event_name == 'push' && github.repository == 'ivandotv/dumba' && matrix.node == 16 && github.ref == 'refs/heads/master'
+        if: github.event_name == 'push' && github.repository == 'ivandotv/oktopod' && matrix.node == 16 && github.ref == 'refs/heads/master'
         uses: changesets/action@master
         id: 'changesets'
         with:
