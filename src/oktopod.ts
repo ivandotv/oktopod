@@ -145,12 +145,12 @@ export class Oktopod {
         return
       }
       this.bus.off(event, machineListener)
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
       this.serviceToEvents.get(listener)!.delete(event)
     }
 
     this.bus.on(event, machineListener)
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     this.serviceToEvents.get(listener)!.set(event, unsubscribe)
 
     return unsubscribe
