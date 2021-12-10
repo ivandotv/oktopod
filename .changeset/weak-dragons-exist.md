@@ -1,5 +1,0 @@
----
-'oktopod': minor
----
-
-Initial publish

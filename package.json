@@ -1,9 +1,16 @@
 {
   "name": "oktopod",
   "version": "0.0.0",
-  "description": "",
-  "keywords": [],
-  "private": true,
+  "description": "Simple event bus for xstate machines and regular functions.",
+  "keywords": [
+    "xstate",
+    "bus",
+    "eventbus",
+    "event bus",
+    "xstate bus",
+    "xstate event bus"
+  ],
+  "private": false,
   "author": "Ivan Vlatković",
   "license": "MIT",
   "main": "./dist/prod/oktopod.js",
