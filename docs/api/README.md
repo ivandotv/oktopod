@@ -1,44 +1,36 @@
-oktopod-test
+oktopod
 
-# oktopod-test
+# oktopod
 
 ## Table of contents
 
-### Functions
+### Classes
 
-- [a](README.md#a)
-- [oktopod](README.md#oktopod)
+- [Oktopod](classes/Oktopod.md)
 
-## Functions
+### Type aliases
 
-### a
+- [EventPayload](README.md#eventpayload)
 
-▸ **a**(): `void`
+## Type aliases
 
-#### Returns
+### EventPayload
 
-`void`
+Ƭ **EventPayload**<`TData`\>: `Object`
 
-#### Defined in
-
-a.ts:1
-
-___
-
-### oktopod
-
-▸ **oktopod**(`name?`): `void`
-
-#### Parameters
+#### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `name?` | `string` |
+| `TData` | `unknown` |
 
-#### Returns
+#### Type declaration
 
-`void`
+| Name | Type |
+| :------ | :------ |
+| `data` | `TData` |
+| `event` | `string` |
 
 #### Defined in
 
-index.ts:5
+[src/oktopod.ts:5](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L5)
