@@ -1,8 +1,5 @@
 import { interpret } from 'xstate'
-import { createBus, createMachine } from './utils'
-
-//todo - send event
-//todo - send command
+import { createBus, createMachine } from './__fixtures__/utils'
 
 describe('Add machine to event bus', () => {
   test('register machine', () => {
@@ -36,6 +33,7 @@ describe('Add machine to event bus', () => {
 
     const unregister = bus.register(service)
     unregister()
+
     expect(bus.getServiceById(service.id)).toBeUndefined()
   })
 
