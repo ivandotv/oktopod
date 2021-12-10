@@ -57,7 +57,7 @@ jobs:
 
       - name: 'Publish to NPM'
         if: github.event_name == 'push' && github.repository == 'ivandotv/oktopod' && matrix.node == 16 && github.ref == 'refs/heads/main'
-        uses: changesets/action@master
+        uses: changesets/action@v1
         id: 'changesets'
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
