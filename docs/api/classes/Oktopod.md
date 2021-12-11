@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[src/oktopod.ts:32](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L32)
+[src/oktopod.ts:32](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L32)
 
 ## Properties
 
@@ -45,7 +45,7 @@
 
 #### Defined in
 
-[src/oktopod.ts:18](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L18)
+[src/oktopod.ts:18](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L18)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:25](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L25)
+[src/oktopod.ts:25](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L25)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:27](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L27)
+[src/oktopod.ts:27](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L27)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:20](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L20)
+[src/oktopod.ts:20](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L20)
 
 ## Methods
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:187](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L187)
+[src/oktopod.ts:187](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L187)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:195](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L195)
+[src/oktopod.ts:195](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L195)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:227](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L227)
+[src/oktopod.ts:227](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L227)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:159](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L159)
+[src/oktopod.ts:159](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L159)
 
 ___
 
@@ -192,7 +192,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:39](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L39)
+[src/oktopod.ts:39](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L39)
 
 ▸ **on**<`TService`\>(`event`, `listener`, `send`): (`unregister?`: `boolean`) => `void`
 
@@ -228,7 +228,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:41](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L41)
+[src/oktopod.ts:41](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L41)
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:199](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L199)
+[src/oktopod.ts:199](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L199)
 
 ___
 
@@ -275,7 +275,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:175](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L175)
+[src/oktopod.ts:175](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L175)
 
 ___
 
@@ -315,7 +315,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:85](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L85)
+[src/oktopod.ts:85](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L85)
 
 ___
 
@@ -335,4 +335,4 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:214](https://github.com/ivandotv/oktopod/blob/02ff2b1/src/oktopod.ts#L214)
+[src/oktopod.ts:214](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L214)
