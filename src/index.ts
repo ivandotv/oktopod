@@ -1,1 +1,1 @@
-export * from '~/oktopod'
+export * from './oktopod'

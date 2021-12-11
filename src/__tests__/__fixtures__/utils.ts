@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { createModel } from 'xstate/lib/model'
-import { EventPayload, Oktopod } from '~/oktopod'
+import { EventPayload, Oktopod } from '../../oktopod'
 
 export function createBus() {
   return new Oktopod()

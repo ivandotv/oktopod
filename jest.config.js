@@ -5,9 +5,6 @@ module.exports = {
   ],
   testEnvironment: 'node',
   moduleDirectories: ['node_modules', 'src'],
-  moduleNameMapper: {
-    '~/(.*)': '<rootDir>/src/$1'
-  },
   watchPlugins: [
     'jest-watch-typeahead/filename',
     'jest-watch-typeahead/testname'

@@ -20,7 +20,7 @@
     "import": "./dist/prod/oktopod.esm.js",
     "require": "./dist/prod/oktopod.js"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/types/index.d.ts",
   "files": [
     "dist",
     "src"
