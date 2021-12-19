@@ -1,5 +1,5 @@
 import { interpret } from 'xstate'
-import { createBus, createTestMachine } from './__fixtures__/utils'
+import { createBus, createTestMachine } from './__fixtures__/test-utils'
 
 describe('Add machine to event bus', () => {
   test('register machine', () => {

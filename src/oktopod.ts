@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { ActorRef, EventFrom, Interpreter, InterpreterStatus } from 'xstate'
+import { ActorRef, EventFrom, Interpreter } from 'xstate'
+import { serviceCanAcceptEvent, isService, serviceIsRunning } from './utils'
 
 export type EventPayload<TData = unknown> = {
   event: string
@@ -57,7 +58,7 @@ export class Oktopod {
     listener: TService | ((payload: EventPayload) => void),
     send?: Pick<EventFrom<TService>, 'type'>['type']
   ): () => void | ((unregister?: boolean) => void) {
-    if (this.isService(listener)) {
+    if (isService(listener)) {
       invariant(
         send,
         `When using machine as listener, please provide send type`
@@ -74,12 +75,6 @@ export class Oktopod {
       this.bus.off(event, wrappedListener)
       this.listenerToWrapper.delete(listener)
     }
-  }
-
-  protected isService(
-    machine: unknown
-  ): machine is Interpreter<any, any, any, any> | ActorRef<any> {
-    return machine instanceof Interpreter
   }
 
   protected serviceOn<
@@ -112,28 +107,12 @@ export class Oktopod {
       this._register(listener)
     }
 
-    const machineListener = normalizeListener((data: EventPayload) => {
-      const snapshot = listener.getSnapshot()
-      // @ts-expect-error - ActorRef type has no "status" prop
-      if (listener.status !== InterpreterStatus.Running /* 1 */) {
-        /* istanbul ignore next */
-        if (__DEV__) {
-          console.warn(
-            `Event ${data.event} not sent to service: ${listener.id} because the service is not running`
-          )
-        }
-
+    const serviceListener = normalizeListener((data: EventPayload) => {
+      if (!serviceIsRunning(listener, data.event)) {
         return
       }
 
-      if (!snapshot.nextEvents.includes(send)) {
-        /* istanbul ignore next */
-        if (__DEV__) {
-          console.warn(
-            `Event ${data.event} not sent to service ${listener.id} because the service does not accept event: ${send}`
-          )
-        }
-
+      if (!serviceCanAcceptEvent(listener, send)) {
         return
       }
 
@@ -146,12 +125,12 @@ export class Oktopod {
 
         return
       }
-      this.bus.off(event, machineListener)
+      this.bus.off(event, serviceListener)
       /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
       this.serviceToEvents.get(listener)!.delete(event)
     }
 
-    this.bus.on(event, machineListener)
+    this.bus.on(event, serviceListener)
     /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     this.serviceToEvents.get(listener)!.set(event, unsubscribe)
 
@@ -165,7 +144,7 @@ export class Oktopod {
       | ActorRef<any>
       | ((...args: any[]) => void)
   ): void {
-    if (this.isService(listener)) {
+    if (isService(listener)) {
       listener
       this.serviceOff(event, listener)
 

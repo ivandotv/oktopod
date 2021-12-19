@@ -1,4 +1,4 @@
-import { createBus } from './__fixtures__/utils'
+import { createBus } from './__fixtures__/test-utils'
 
 describe('Function listener', () => {
   test('Register listener for a specific event', () => {
