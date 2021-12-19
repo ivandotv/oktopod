@@ -1,10 +1,11 @@
 import { interpret } from 'xstate'
-import { createBus, createMachine } from './__fixtures__/utils'
+import { createBus, createTestMachine } from './__fixtures__/utils'
 
 describe('Add machine to event bus', () => {
   test('register machine', () => {
     const bus = createBus()
-    const machine = createMachine('foo')
+    const machine = createTestMachine('foo')
+
     const service = interpret(machine)
     service.start()
 
@@ -15,7 +16,7 @@ describe('Add machine to event bus', () => {
 
   test('Unregister machine', () => {
     const bus = createBus()
-    const machine = createMachine('foo')
+    const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -27,7 +28,7 @@ describe('Add machine to event bus', () => {
 
   test('Unregister machine via callback function', () => {
     const bus = createBus()
-    const machine = createMachine('foo')
+    const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
@@ -41,7 +42,7 @@ describe('Add machine to event bus', () => {
     const bus = createBus()
     const event = 'event'
     const data = { foo: 'bar' }
-    const machine = createMachine('foo')
+    const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 

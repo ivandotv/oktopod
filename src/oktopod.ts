@@ -1,6 +1,6 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
-import { EventFrom, EventObject, Interpreter, InterpreterStatus } from 'xstate'
+import { ActorRef, EventFrom, Interpreter, InterpreterStatus } from 'xstate'
 
 export type EventPayload<TData = unknown> = {
   event: string
@@ -18,11 +18,11 @@ export class Oktopod {
   protected bus: ReturnType<typeof mitt>
 
   protected serviceToEvents: Map<
-    Interpreter<any, any, any>,
+    Interpreter<any, any, any> | ActorRef<any>,
     Map<string, () => void>
   >
 
-  protected idToService: Map<string, Interpreter<any, any, any>>
+  protected idToService: Map<string, Interpreter<any, any, any> | ActorRef<any>>
 
   protected listenerToWrapper: Map<
     (...args: any[]) => void,
@@ -39,12 +39,9 @@ export class Oktopod {
   on(event: string, listener: (payload: EventPayload) => void): () => void
 
   on<
-    TService extends Interpreter<any, any, any, any> = Interpreter<
-      any,
-      any,
-      any,
-      any
-    >
+    TService extends
+      | Interpreter<any, any, any, any>
+      | ActorRef<any> = Interpreter<any, any, any, any>
   >(
     event: string,
     listener: TService,
@@ -52,18 +49,15 @@ export class Oktopod {
   ): (unregister?: boolean) => void
 
   on<
-    TService extends Interpreter<any, any, any, any> = Interpreter<
-      any,
-      any,
-      any,
-      any
-    >
+    TService extends
+      | Interpreter<any, any, any, any>
+      | ActorRef<any> = Interpreter<any, any, any, any>
   >(
     event: string,
     listener: TService | ((payload: EventPayload) => void),
     send?: Pick<EventFrom<TService>, 'type'>['type']
   ): () => void | ((unregister?: boolean) => void) {
-    if (listener instanceof Interpreter) {
+    if (this.isService(listener)) {
       invariant(
         send,
         `When using machine as listener, please provide send type`
@@ -82,8 +76,14 @@ export class Oktopod {
     }
   }
 
+  protected isService(
+    machine: unknown
+  ): machine is Interpreter<any, any, any, any> | ActorRef<any> {
+    return machine instanceof Interpreter
+  }
+
   protected serviceOn<
-    TService extends Interpreter<any, any, any> = Interpreter<
+    TService extends Interpreter<any, any, any> | ActorRef<any> = Interpreter<
       any,
       any,
       any,
@@ -113,7 +113,9 @@ export class Oktopod {
     }
 
     const machineListener = normalizeListener((data: EventPayload) => {
-      if (listener.status !== InterpreterStatus.Running) {
+      const snapshot = listener.getSnapshot()
+      // @ts-expect-error - ActorRef type has no "status" prop
+      if (listener.status !== InterpreterStatus.Running /* 1 */) {
         /* istanbul ignore next */
         if (__DEV__) {
           console.warn(
@@ -124,7 +126,7 @@ export class Oktopod {
         return
       }
 
-      if (listener.state.nextEvents.findIndex((evt) => evt === send) < 0) {
+      if (!snapshot.nextEvents.includes(send)) {
         /* istanbul ignore next */
         if (__DEV__) {
           console.warn(
@@ -158,9 +160,13 @@ export class Oktopod {
 
   off(
     event: string,
-    listener: Interpreter<any, any, any> | ((...args: any[]) => void)
+    listener:
+      | Interpreter<any, any, any>
+      | ActorRef<any>
+      | ((...args: any[]) => void)
   ): void {
-    if (listener instanceof Interpreter) {
+    if (this.isService(listener)) {
+      listener
       this.serviceOff(event, listener)
 
       return
@@ -174,7 +180,7 @@ export class Oktopod {
 
   protected serviceOff(
     event: string,
-    listener: Interpreter<any, any, any>
+    listener: Interpreter<any, any, any> | ActorRef<any>
   ): void {
     const listenerData = this.serviceToEvents.get(listener)
     if (listenerData) {
@@ -204,7 +210,7 @@ export class Oktopod {
     }
   }
 
-  private _register(service: Interpreter<any, any, any>): void {
+  private _register(service: Interpreter<any, any, any> | ActorRef<any>): void {
     if (!this.serviceToEvents.get(service)) {
       this.serviceToEvents.set(service, new Map())
       this.idToService.set(service.id, service)
@@ -215,7 +221,9 @@ export class Oktopod {
     this._unregister(service)
   }
 
-  private _unregister(service: Interpreter<any, any, any>): void {
+  private _unregister(
+    service: Interpreter<any, any, any> | ActorRef<any>
+  ): void {
     const eventData = this.serviceToEvents.get(service)
     if (eventData) {
       eventData.forEach((unsubscribe) => unsubscribe())
@@ -225,10 +233,11 @@ export class Oktopod {
   }
 
   getServiceById<
-    TContext = any,
-    TStateSchema = any,
-    TEvent extends EventObject = EventObject
-  >(id: string): Interpreter<TContext, TStateSchema, TEvent> | undefined {
+    TService extends
+      | Interpreter<any, any, any, any>
+      | ActorRef<any> = Interpreter<any, any, any, any>
+  >(id: string): TService | undefined {
+    // @ts-expect-error - idToService also returns ActorRef type
     return this.idToService.get(id)
   }
 }
