@@ -1,9 +1,9 @@
 import { interpret } from 'xstate'
-import { createBus, createTestMachine } from './__fixtures__/test-utils'
+import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
 
 describe('Add machine to event bus', () => {
   test('register machine', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const machine = createTestMachine('foo')
 
     const service = interpret(machine)
@@ -15,7 +15,7 @@ describe('Add machine to event bus', () => {
   })
 
   test('Unregister machine', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
@@ -27,7 +27,7 @@ describe('Add machine to event bus', () => {
   })
 
   test('Unregister machine via callback function', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
@@ -39,7 +39,7 @@ describe('Add machine to event bus', () => {
   })
 
   test('When the machine is unregistered, it does not respond to events', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('foo')

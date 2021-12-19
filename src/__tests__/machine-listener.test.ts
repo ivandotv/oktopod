@@ -1,9 +1,9 @@
 import { interpret } from 'xstate'
-import { createBus, createTestMachine } from './__fixtures__/test-utils'
+import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
 
 describe('Machine listener', () => {
   test('Register machine for specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('foo')
@@ -18,7 +18,7 @@ describe('Machine listener', () => {
   })
 
   test('Machine can only register once for a specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'foo' }
     const machine = createTestMachine('foo')
@@ -34,7 +34,7 @@ describe('Machine listener', () => {
   })
 
   test('Emit event with no data', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const machine = createTestMachine('foo')
     const service = interpret(machine)
@@ -50,7 +50,7 @@ describe('Machine listener', () => {
   })
 
   test('Register multiple machines for a specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('one')
@@ -70,7 +70,7 @@ describe('Machine listener', () => {
   })
 
   test('Register machine for all events', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const eventTwo = 'event_two'
@@ -93,7 +93,7 @@ describe('Machine listener', () => {
   })
 
   test('Do not send events to a stopped machine', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('foo')
@@ -108,7 +108,7 @@ describe('Machine listener', () => {
   })
 
   test('Do not send event to a machine that do not accept particular event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('foo')
@@ -124,7 +124,7 @@ describe('Machine listener', () => {
 
   describe('Unregister', () => {
     test('Unregister machine for specific event', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const event = 'event'
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
@@ -144,7 +144,7 @@ describe('Machine listener', () => {
     })
 
     test('Unregister machine for all events', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
       const service = interpret(machine)
@@ -164,7 +164,7 @@ describe('Machine listener', () => {
     })
 
     test('Remove listener and unregister machine', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const event = 'foo'
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
@@ -185,7 +185,7 @@ describe('Machine listener', () => {
     })
 
     test('Unregister machine for specific event via returned unsubscribe function', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const event = 'event'
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
@@ -205,7 +205,7 @@ describe('Machine listener', () => {
     })
 
     test('Unregister machine for all events via returned unsubscribe function', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const event = 'event'
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
@@ -226,7 +226,7 @@ describe('Machine listener', () => {
   })
 
   test('Clear all listeners for specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
     const machine = createTestMachine('one')

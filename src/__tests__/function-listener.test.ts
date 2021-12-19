@@ -1,8 +1,8 @@
-import { createBus } from './__fixtures__/test-utils'
+import { createTestBus } from './__fixtures__/test-utils'
 
 describe('Function listener', () => {
   test('Register listener for a specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const listener = jest.fn()
     const event = 'event'
 
@@ -13,7 +13,7 @@ describe('Function listener', () => {
   })
 
   test('Listener recieves event data', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const listener = jest.fn()
     const event = 'event'
     const data = { foo: 'bar' }
@@ -25,7 +25,7 @@ describe('Function listener', () => {
   })
 
   test('Emit event with no data', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const listener = jest.fn()
     const event = 'event'
 
@@ -36,7 +36,7 @@ describe('Function listener', () => {
   })
 
   test('Register multiple listeners for a specific event', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const firstListener = jest.fn()
     const secondListener = jest.fn()
     const event = 'event'
@@ -53,7 +53,7 @@ describe('Function listener', () => {
   })
 
   test('Regsiter listener for all events', () => {
-    const bus = createBus()
+    const bus = createTestBus()
     const listener = jest.fn()
     const event = 'event'
     const secondEvent = 'eventTwo'
@@ -74,7 +74,7 @@ describe('Function listener', () => {
 
   describe('Unregister', () => {
     test('Unregister listener for a specific event', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const listener = jest.fn()
       const event = 'event'
       const data = { foo: 'bar' }
@@ -87,7 +87,7 @@ describe('Function listener', () => {
     })
 
     test('Unregister listener for all events', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const listener = jest.fn()
       const event = 'event'
       const data = { foo: 'bar' }
@@ -103,7 +103,7 @@ describe('Function listener', () => {
     })
 
     test('Unregister listener for specific event via returned unsubscribe function', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const listener = jest.fn()
       const event = 'event'
       const data = { foo: 'bar' }
@@ -116,7 +116,7 @@ describe('Function listener', () => {
     })
 
     test('Unregister listener for all events via returned unsubscribe function', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const listener = jest.fn()
       const event = 'event'
       const data = { foo: 'bar' }
@@ -132,7 +132,7 @@ describe('Function listener', () => {
     })
 
     test('Clear all listeners for a specific event', () => {
-      const bus = createBus()
+      const bus = createTestBus()
       const firstListener = jest.fn()
       const secondListener = jest.fn()
       const event = 'event'
