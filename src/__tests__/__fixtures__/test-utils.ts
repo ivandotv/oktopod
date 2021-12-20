@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { ActorRefFrom, createMachine, spawn } from 'xstate'
+import { ActorRefFrom, createMachine, InterpreterFrom, spawn } from 'xstate'
 import { createModel } from 'xstate/lib/model'
 import { EventPayload, Oktopod } from '../../oktopod'
 
-export function createBus() {
+export function createTestBus() {
   return new Oktopod()
 }
+
+export type TestService = InterpreterFrom<ReturnType<typeof createTestMachine>>
 
 const childMachine = createMachine({
   initial: 'idle',
@@ -51,20 +53,35 @@ export function createTestMachine(id: string) {
             actions: model.assign((_ctx, evt) => {
               return {
                 event: { data: evt.data, event: evt.event },
-                type: 'EVENT_A'
+                type: evt.type
               }
-            })
+            }),
+            target: 'state_a'
           },
           EVENT_B: {
             actions: model.assign((_ctx, evt) => {
               return {
                 event: { data: evt.data, event: evt.event },
-                type: 'EVENT_B'
+                type: evt.type
+              }
+            }),
+            target: 'state_b'
+          }
+        }
+      },
+      state_a: {
+        on: {
+          EVENT_A: {
+            actions: model.assign((_ctx, evt) => {
+              return {
+                event: { data: evt.data, event: evt.event },
+                type: evt.type
               }
             })
           }
         }
       },
+      state_b: {},
       done: {
         type: 'final'
       }

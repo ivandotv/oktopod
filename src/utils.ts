@@ -1,4 +1,5 @@
-import { ActorRef, Interpreter, InterpreterStatus } from 'xstate'
+import { ActorRef, EventFrom, Interpreter, InterpreterStatus } from 'xstate'
+import { Oktopod } from '.'
 
 export function isService(
   value: unknown
@@ -43,4 +44,31 @@ export function serviceCanAcceptEvent(
   }
 
   return true
+}
+
+// eslint-disable-next-line
+export function createActions(bus: Oktopod) {
+  return {
+    sendTo<
+      TService extends
+        | Interpreter<any, any, any, any>
+        | ActorRef<any> = Interpreter<any, any, any, any>
+    >(
+      serviceId: string | string[] | ((ctx: any, evt: any) => string[]),
+      event: EventFrom<TService> | ((ctx: any, evt: any) => EventFrom<TService>)
+    ): any {
+      return (ctx: any, evt: any) => {
+        let ids: string[]
+        if (typeof serviceId === 'function') {
+          ids = serviceId(ctx, evt)
+        } else {
+          ids = Array.isArray(serviceId) ? serviceId : [serviceId]
+        }
+
+        bus.sendTo(ids, typeof event === 'function' ? event(ctx, evt) : event)
+      }
+    }
+    //TODO - forwardTo
+    //TODO - emit
+  }
 }

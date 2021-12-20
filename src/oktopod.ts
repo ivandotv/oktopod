@@ -219,4 +219,35 @@ export class Oktopod {
     // @ts-expect-error - idToService also returns ActorRef type
     return this.idToService.get(id)
   }
+
+  sendTo<
+    TService extends
+      | Interpreter<any, any, any, any>
+      | ActorRef<any> = Interpreter<any, any, any, any>
+  >(
+    serviceId: string | string[] | (() => string[]),
+    event: EventFrom<TService>
+  ): void {
+    // const resolve ids
+    let ids: string[]
+    if (typeof serviceId === 'function') {
+      ids = serviceId()
+    } else {
+      ids = Array.isArray(serviceId) ? serviceId : [serviceId]
+    }
+
+    for (const id of ids) {
+      const service = this.idToService.get(id)
+
+      if (
+        service &&
+        // @ts-expect-error - find a way to narrow down event.type
+        serviceIsRunning(service, event.type) &&
+        // @ts-expect-error - find a way to narrow down event.type
+        serviceCanAcceptEvent(service, event.type)
+      ) {
+        service.send(event)
+      }
+    }
+  }
 }
