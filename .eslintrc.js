@@ -49,7 +49,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-function-return-type': [
-      'error',
+      'off',
       {
         allowExpressions: true,
         allowTypedFunctionExpressions: true

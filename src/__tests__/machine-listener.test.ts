@@ -5,47 +5,50 @@ describe('Machine listener', () => {
   test('Register machine for specific event', () => {
     const bus = createTestBus()
     const event = 'event'
+    const type = 'EVENT_A'
     const data = { foo: 'bar' }
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
-    bus.on(event, service, 'EVENT_A')
+    bus.on(event, service, type)
     bus.emit(event, data)
 
-    expect(service.state.context.event).toStrictEqual({ event, data })
+    expect(service.state.context.event).toStrictEqual({ event, data, type })
     expect(bus.getServiceById(service.id)).toBe(service)
   })
 
-  test('Machine can only register once for a specific event', () => {
+  test('If the same event is registered multiple times, same unsubscribe function is returned', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'foo' }
+    const type = 'EVENT_A'
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
-    const unsubscribe = bus.on(event, service, 'EVENT_A')
+    const unsubscribe = bus.on(event, service, type)
     const unsubscribeTwo = bus.on(event, service, 'EVENT_B')
     bus.emit(event, data)
 
-    expect(service.state.context.type).toBe('EVENT_A')
     expect(unsubscribe).toBe(unsubscribeTwo)
   })
 
   test('Emit event with no data', () => {
     const bus = createTestBus()
     const event = 'event'
+    const type = 'EVENT_A'
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
-    bus.on(event, service, 'EVENT_A')
+    bus.on(event, service, type)
     bus.emit(event)
 
     expect(service.state.context.event).toStrictEqual({
       event,
-      data: undefined
+      data: undefined,
+      type
     })
   })
 
@@ -53,6 +56,7 @@ describe('Machine listener', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
+    const type = 'EVENT_A'
     const machine = createTestMachine('one')
     const service = interpret(machine)
     service.start()
@@ -61,34 +65,36 @@ describe('Machine listener', () => {
     const serviceTwo = interpret(machineTwo)
     serviceTwo.start()
 
-    bus.on(event, service, 'EVENT_A')
-    bus.on(event, serviceTwo, 'EVENT_A')
+    bus.on(event, service, type)
+    bus.on(event, serviceTwo, type)
     bus.emit(event, data)
 
-    expect(service.state.context.event).toStrictEqual({ event, data })
-    expect(serviceTwo.state.context.event).toStrictEqual({ event, data })
+    expect(service.state.context.event).toStrictEqual({ event, data, type })
+    expect(serviceTwo.state.context.event).toStrictEqual({ event, data, type })
   })
 
   test('Register machine for all events', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
+    const type = 'EVENT_A'
     const eventTwo = 'event_two'
     const dataTwo = { foo_two: 'bar_two' }
     const machine = createTestMachine('foo')
     const service = interpret(machine)
     service.start()
 
-    bus.on('*', service, 'EVENT_A')
+    bus.on('*', service, type)
     bus.emit(event, data)
 
-    expect(service.state.context.event).toStrictEqual({ event, data })
+    expect(service.state.context.event).toStrictEqual({ event, data, type })
 
     bus.emit(eventTwo, dataTwo)
 
     expect(service.state.context.event).toStrictEqual({
       event: eventTwo,
-      data: dataTwo
+      data: dataTwo,
+      type
     })
   })
 

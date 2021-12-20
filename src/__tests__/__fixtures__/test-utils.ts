@@ -19,7 +19,6 @@ const childMachine = createMachine({
 const model = createModel(
   {
     event: null as EventPayload | null,
-    type: null as 'EVENT_A' | 'EVENT_B' | null,
     actor: null as unknown as ActorRefFrom<ReturnType<typeof createMachine>>
   },
   {
@@ -50,19 +49,17 @@ export function createTestMachine(id: string) {
       idle: {
         on: {
           EVENT_A: {
-            actions: model.assign((_ctx, evt) => {
+            actions: model.assign((_ctx, event) => {
               return {
-                event: { data: evt.data, event: evt.event },
-                type: evt.type
+                event
               }
             }),
             target: 'state_a'
           },
           EVENT_B: {
-            actions: model.assign((_ctx, evt) => {
+            actions: model.assign((_ctx, event) => {
               return {
-                event: { data: evt.data, event: evt.event },
-                type: evt.type
+                event
               }
             }),
             target: 'state_b'
@@ -72,10 +69,9 @@ export function createTestMachine(id: string) {
       state_a: {
         on: {
           EVENT_A: {
-            actions: model.assign((_ctx, evt) => {
+            actions: model.assign((_ctx, event) => {
               return {
-                event: { data: evt.data, event: evt.event },
-                type: evt.type
+                event
               }
             })
           }

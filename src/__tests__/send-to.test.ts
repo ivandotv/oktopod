@@ -6,24 +6,25 @@ describe('Bus sendTo functionality', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'foo' }
+    const type = 'EVENT_A'
     const service = interpret(createTestMachine('foo'))
     service.start()
     bus.register(service)
 
     bus.sendTo<typeof service>(service.id, {
-      type: 'EVENT_A',
+      type,
       event,
       data
     })
 
-    expect(service.state.context.type).toBe('EVENT_A')
-    expect(service.state.context.event).toStrictEqual({ data, event })
+    expect(service.state.context.event).toStrictEqual({ data, event, type })
   })
 
   test('Send event to multiple services', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'foo' }
+    const type = 'EVENT_A'
     const service = interpret(createTestMachine('foo'))
     const serviceTwo = interpret(createTestMachine('bar'))
     service.start()
@@ -32,15 +33,13 @@ describe('Bus sendTo functionality', () => {
     bus.register(serviceTwo)
 
     bus.sendTo<typeof service>([service.id, serviceTwo.id], {
-      type: 'EVENT_A',
+      type,
       event,
       data
     })
 
-    expect(service.state.context.type).toBe('EVENT_A')
-    expect(service.state.context.event).toStrictEqual({ data, event })
-    expect(serviceTwo.state.context.type).toBe('EVENT_A')
-    expect(serviceTwo.state.context.event).toStrictEqual({ data, event })
+    expect(service.state.context.event).toStrictEqual({ data, event, type })
+    expect(serviceTwo.state.context.event).toStrictEqual({ data, event, type })
   })
 
   test('Do nothing if service is not present', () => {

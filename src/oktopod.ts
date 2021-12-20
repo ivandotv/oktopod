@@ -1,6 +1,7 @@
 import mitt from 'mitt'
 import invariant from 'tiny-invariant'
 import { ActorRef, EventFrom, Interpreter } from 'xstate'
+import { createActions } from './actions'
 import { serviceCanAcceptEvent, isService, serviceIsRunning } from './utils'
 
 export type EventPayload<TData = unknown> = {
@@ -25,6 +26,8 @@ export class Oktopod {
 
   protected idToService: Map<string, Interpreter<any, any, any> | ActorRef<any>>
 
+  actions: ReturnType<typeof createActions>
+
   protected listenerToWrapper: Map<
     (...args: any[]) => void,
     (...args: any[]) => void
@@ -35,6 +38,8 @@ export class Oktopod {
     this.serviceToEvents = new Map()
     this.idToService = new Map()
     this.listenerToWrapper = new Map()
+
+    this.actions = createActions(this)
   }
 
   on(event: string, listener: (payload: EventPayload) => void): () => void
@@ -97,7 +102,7 @@ export class Oktopod {
         /* istanbul ignore next */
         if (__DEV__) {
           console.warn(
-            `Event: ${event} is already registered for service: ${listener.id}`
+            `Event: ${event} is already registered for service: ${listener.id} to call: ${send}`
           )
         }
 

@@ -1,13 +1,10 @@
 import { createMachine, interpret } from 'xstate'
-import { createActions } from '../utils'
 import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
 
-describe('ForwardTo action creator', () => {
+describe('Action - forwardTo', () => {
   test('Forward event to target via id', () => {
     const bus = createTestBus()
-    const { busForwardTo } = createActions(bus)
-
-    const eventToSend = { type: 'EVENT_A', data: 'foo', event: 'foo' }
+    const eventToSend = { type: 'EVENT_A', data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
     bus.register(receiverService)
@@ -20,7 +17,7 @@ describe('ForwardTo action creator', () => {
           idle: {
             on: {
               EVENT_A: {
-                actions: [busForwardTo(receiverService.id)]
+                actions: [bus.actions.forwardTo(receiverService.id)]
               }
             }
           }
@@ -30,19 +27,13 @@ describe('ForwardTo action creator', () => {
       .start()
       .send(eventToSend)
 
-    expect(receiverService.state.context.event).toStrictEqual({
-      event: eventToSend.event,
-      data: eventToSend.data
-    })
-    expect(receiverService.state.context.type).toBe(eventToSend.type)
+    expect(receiverService.state.context.event).toStrictEqual(eventToSend)
     expect(receiverService.state.matches('state_a')).toBe(true)
   })
 
   test('Send action to multiple targets via array of ids', () => {
     const bus = createTestBus()
-    const { busForwardTo } = createActions(bus)
-
-    const eventToSend = { type: 'EVENT_A', data: 'foo', event: 'foo' }
+    const eventToSend = { type: 'EVENT_A', data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
     bus.register(receiverService)
@@ -61,7 +52,10 @@ describe('ForwardTo action creator', () => {
             on: {
               EVENT_A: {
                 actions: [
-                  busForwardTo([receiverService.id, receiverServiceTwo.id])
+                  bus.actions.forwardTo([
+                    receiverService.id,
+                    receiverServiceTwo.id
+                  ])
                 ]
               }
             }
@@ -72,26 +66,15 @@ describe('ForwardTo action creator', () => {
       .start()
       .send(eventToSend)
 
-    expect(receiverService.state.context.event).toStrictEqual({
-      event: eventToSend.event,
-      data: eventToSend.data
-    })
-    expect(receiverService.state.context.type).toBe(eventToSend.type)
+    expect(receiverService.state.context.event).toStrictEqual(eventToSend)
     expect(receiverService.state.matches('state_a')).toBe(true)
-
-    expect(receiverServiceTwo.state.context.event).toStrictEqual({
-      event: eventToSend.event,
-      data: eventToSend.data
-    })
-    expect(receiverServiceTwo.state.context.type).toBe(eventToSend.type)
+    expect(receiverServiceTwo.state.context.event).toStrictEqual(eventToSend)
     expect(receiverServiceTwo.state.matches('state_a')).toBe(true)
   })
 
   test('Send action to multiple targets via function', () => {
     const bus = createTestBus()
-    const { busForwardTo } = createActions(bus)
-
-    const eventToSend = { type: 'EVENT_A', data: 'foo', event: 'foo' }
+    const eventToSend = { type: 'EVENT_A', data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
     bus.register(receiverService)
@@ -100,6 +83,8 @@ describe('ForwardTo action creator', () => {
       createTestMachine('receiverTwo')
     ).start()
     bus.register(receiverServiceTwo)
+
+    const ids = [receiverService.id, receiverServiceTwo.id]
 
     interpret(
       createMachine({
@@ -110,7 +95,7 @@ describe('ForwardTo action creator', () => {
             on: {
               EVENT_A: {
                 actions: [
-                  busForwardTo((_ctx, evt) => {
+                  bus.actions.forwardTo((_ctx, evt) => {
                     return evt.ids
                   })
                 ]
@@ -122,22 +107,19 @@ describe('ForwardTo action creator', () => {
     )
       .start()
       .send({
-        ids: [receiverService.id, receiverServiceTwo.id],
+        ids,
         ...eventToSend
       })
 
     expect(receiverService.state.context.event).toStrictEqual({
-      event: eventToSend.event,
-      data: eventToSend.data
+      ids,
+      ...eventToSend
     })
-    expect(receiverService.state.context.type).toBe(eventToSend.type)
     expect(receiverService.state.matches('state_a')).toBe(true)
-
     expect(receiverServiceTwo.state.context.event).toStrictEqual({
-      event: eventToSend.event,
-      data: eventToSend.data
+      ids,
+      ...eventToSend
     })
-    expect(receiverServiceTwo.state.context.type).toBe(eventToSend.type)
     expect(receiverServiceTwo.state.matches('state_a')).toBe(true)
   })
 })

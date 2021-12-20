@@ -1,5 +1,4 @@
-import { ActorRef, EventFrom, Interpreter, InterpreterStatus } from 'xstate'
-import { Oktopod } from '.'
+import { ActorRef, Interpreter, InterpreterStatus } from 'xstate'
 
 export function isService(
   value: unknown
@@ -46,45 +45,21 @@ export function serviceCanAcceptEvent(
   return true
 }
 
-// eslint-disable-next-line
-export function createActions(bus: Oktopod) {
-  return {
-    busSendTo<
-      TService extends
-        | Interpreter<any, any, any, any>
-        | ActorRef<any> = Interpreter<any, any, any, any>
-    >(
-      serviceId: string | string[] | ((ctx: any, evt: any) => string[]),
-      event: EventFrom<TService> | ((ctx: any, evt: any) => EventFrom<TService>)
-    ): any {
-      return (ctx: any, evt: any) => {
-        bus.sendTo(
-          resolveIds(serviceId, ctx, evt),
-          typeof event === 'function' ? event(ctx, evt) : event
-        )
-      }
-    },
-    busForwardTo(
-      serviceId: string | string[] | ((ctx: any, evt: any) => string[])
-    ): any {
-      return (ctx: any, evt: any) => {
-        bus.sendTo(resolveIds(serviceId, ctx, evt), evt)
-      }
-    }
-  }
-}
-
-function resolveIds(
-  idOrFn: string | string[] | ((ctx: any, evt: any) => string[]),
+export function resolveIds(
+  idOrFn: string | string[] | ((ctx: any, evt: any) => string | string[]),
   ctx: any,
   evt: any
 ): string | string[] {
-  let ids: string[]
-  if (typeof idOrFn === 'function') {
+  let ids: string | string[]
+  if (isFunction(idOrFn)) {
     ids = idOrFn(ctx, evt)
   } else {
     ids = Array.isArray(idOrFn) ? idOrFn : [idOrFn]
   }
 
   return ids
+}
+
+export function isFunction(value: any): value is (...args: any[]) => any {
+  return typeof value === 'function'
 }
