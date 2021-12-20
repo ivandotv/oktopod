@@ -49,7 +49,7 @@ export function serviceCanAcceptEvent(
 // eslint-disable-next-line
 export function createActions(bus: Oktopod) {
   return {
-    sendTo<
+    busSendTo<
       TService extends
         | Interpreter<any, any, any, any>
         | ActorRef<any> = Interpreter<any, any, any, any>
@@ -58,17 +58,33 @@ export function createActions(bus: Oktopod) {
       event: EventFrom<TService> | ((ctx: any, evt: any) => EventFrom<TService>)
     ): any {
       return (ctx: any, evt: any) => {
-        let ids: string[]
-        if (typeof serviceId === 'function') {
-          ids = serviceId(ctx, evt)
-        } else {
-          ids = Array.isArray(serviceId) ? serviceId : [serviceId]
-        }
-
-        bus.sendTo(ids, typeof event === 'function' ? event(ctx, evt) : event)
+        bus.sendTo(
+          resolveIds(serviceId, ctx, evt),
+          typeof event === 'function' ? event(ctx, evt) : event
+        )
+      }
+    },
+    busForwardTo(
+      serviceId: string | string[] | ((ctx: any, evt: any) => string[])
+    ): any {
+      return (ctx: any, evt: any) => {
+        bus.sendTo(resolveIds(serviceId, ctx, evt), evt)
       }
     }
-    //TODO - forwardTo
-    //TODO - emit
   }
+}
+
+function resolveIds(
+  idOrFn: string | string[] | ((ctx: any, evt: any) => string[]),
+  ctx: any,
+  evt: any
+): string | string[] {
+  let ids: string[]
+  if (typeof idOrFn === 'function') {
+    ids = idOrFn(ctx, evt)
+  } else {
+    ids = Array.isArray(idOrFn) ? idOrFn : [idOrFn]
+  }
+
+  return ids
 }
