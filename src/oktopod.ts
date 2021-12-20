@@ -148,30 +148,44 @@ export class Oktopod {
       | Interpreter<any, any, any>
       | ActorRef<any>
       | ((...args: any[]) => void)
-  ): void {
-    if (isService(listener)) {
+      | string
+  ): boolean {
+    if (isService(listener) || typeof listener === 'string') {
       listener
-      this.serviceOff(event, listener)
 
-      return
+      return this.serviceOff(event, listener)
     }
 
     const listenerWrapper = this.listenerToWrapper.get(listener)
     if (listenerWrapper) {
       this.bus.off(event, listenerWrapper)
+
+      return true
     }
+
+    return false
   }
 
   protected serviceOff(
     event: string,
-    listener: Interpreter<any, any, any> | ActorRef<any>
-  ): void {
-    const listenerData = this.serviceToEvents.get(listener)
-    if (listenerData) {
-      const unregisterHandler = listenerData.get(event)
-      unregisterHandler && unregisterHandler()
-      listenerData.delete(event)
+    listener: Interpreter<any, any, any> | ActorRef<any> | string
+  ): boolean {
+    const resolvedListener =
+      typeof listener === 'string' ? this.getServiceById(listener) : listener
+
+    if (resolvedListener) {
+      const listenerData = this.serviceToEvents.get(resolvedListener)
+      //todo - __DEV_ not found by string
+      if (listenerData) {
+        const unregisterHandler = listenerData.get(event)
+        unregisterHandler && unregisterHandler()
+        listenerData.delete(event)
+
+        return true
+      }
     }
+
+    return false
   }
 
   clear(event: string): void {
