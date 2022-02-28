@@ -1,15 +1,15 @@
 import { createMachine, interpret } from 'xstate'
-import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
+import { createTestBus, createTestMachine } from '../__fixtures__/test-utils'
 
 describe('Action - emit', () => {
   test('Emit event', () => {
     const bus = createTestBus()
     const busEvent = 'bus_event'
-    const type = 'EVENT_A'
+    const serviceEventToSend = 'EVENT_A'
     const payload = { data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
-    bus.on(busEvent, receiverService, type)
+    bus.on(busEvent, receiverService, serviceEventToSend)
 
     interpret(
       createMachine({
@@ -31,7 +31,7 @@ describe('Action - emit', () => {
 
     expect(receiverService.state.context.event).toStrictEqual({
       data: payload,
-      type,
+      type: serviceEventToSend,
       event: busEvent
     })
     expect(receiverService.state.matches('state_a')).toBe(true)
@@ -40,11 +40,11 @@ describe('Action - emit', () => {
   test('Derive emit event via function', () => {
     const bus = createTestBus()
     const busEvent = 'bus_event'
-    const type = 'EVENT_A'
+    const serviceEventToSend = 'EVENT_A'
     const payload = { data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
-    bus.on(busEvent, receiverService, type)
+    bus.on(busEvent, receiverService, serviceEventToSend)
 
     interpret(
       createMachine({
@@ -72,7 +72,7 @@ describe('Action - emit', () => {
 
     expect(receiverService.state.context.event).toStrictEqual({
       data: payload,
-      type,
+      type: serviceEventToSend,
       event: busEvent
     })
     expect(receiverService.state.matches('state_a')).toBe(true)
@@ -81,11 +81,11 @@ describe('Action - emit', () => {
   test('Derive payload  via function', () => {
     const bus = createTestBus()
     const busEvent = 'bus_event'
-    const type = 'EVENT_A'
+    const serviceEventToSend = 'EVENT_A'
     const payload = { data: 'foo' }
 
     const receiverService = interpret(createTestMachine('receiver')).start()
-    bus.on(busEvent, receiverService, type)
+    bus.on(busEvent, receiverService, serviceEventToSend)
 
     interpret(
       createMachine({
@@ -119,7 +119,7 @@ describe('Action - emit', () => {
 
     expect(receiverService.state.context.event).toStrictEqual({
       data: payload,
-      type,
+      type: serviceEventToSend,
       event: busEvent
     })
     expect(receiverService.state.matches('state_a')).toBe(true)
