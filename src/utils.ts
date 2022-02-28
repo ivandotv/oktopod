@@ -1,4 +1,5 @@
 import { ActorRef, Interpreter, InterpreterStatus } from 'xstate'
+import { EventPayload } from './oktopod'
 
 export function isService(
   value: unknown
@@ -62,4 +63,13 @@ export function resolveIds(
 
 export function isFunction(value: any): value is (...args: any[]) => any {
   return typeof value === 'function'
+}
+
+export function normalizeListener(
+  cb: (data: EventPayload) => void
+): () => void {
+  return (...args: any[]): void => {
+    const data = args.length > 0 ? args[args.length - 1] : undefined
+    cb(data)
+  }
 }
