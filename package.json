@@ -1,7 +1,7 @@
 {
   "name": "oktopod",
   "version": "0.1.1",
-  "description": "Simple event bus for xstate machines and regular functions.",
+  "description": "Event bus implementation for xstate machines",
   "keywords": [
     "xstate",
     "bus",
