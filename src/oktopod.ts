@@ -316,7 +316,7 @@ export default class Oktopod {
       ids = Array.isArray(serviceId) ? serviceId : [serviceId]
     }
 
-    for (const id of ids) {
+    ids.forEach((id) => {
       const service = this.idToService.get(id)
 
       if (
@@ -328,6 +328,8 @@ export default class Oktopod {
       ) {
         service.send(event)
       }
-    }
+    })
+    // for (const id of ids) {
+    // }
   }
 }
