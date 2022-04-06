@@ -1,5 +1,5 @@
 import { ActorRef, EventFrom, Interpreter } from 'xstate'
-import { Oktopod } from './oktopod'
+import Oktopod from './oktopod'
 import { isFunction, resolveIds } from './utils'
 
 export function createActions(bus: Oktopod) {

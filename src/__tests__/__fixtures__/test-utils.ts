@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { ActorRefFrom, createMachine, InterpreterFrom, spawn } from 'xstate'
 import { createModel } from 'xstate/lib/model'
-import { EventPayload, Oktopod } from '../../oktopod'
+import Oktopod, { EventPayload } from '../../oktopod'
 
 export function createTestBus() {
   return new Oktopod()
