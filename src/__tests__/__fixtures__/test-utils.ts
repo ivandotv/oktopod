@@ -19,7 +19,7 @@ const childMachine = createMachine({
 const model = createModel(
   {
     event: null as EventPayload | null,
-    actor: null as unknown as ActorRefFrom<ReturnType<typeof createMachine>>
+    actor: null as unknown as ActorRefFrom<typeof childMachine>
   },
   {
     events: {

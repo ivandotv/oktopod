@@ -1,7 +1,7 @@
 import { interpret } from 'xstate'
 import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
 
-describe('Bus sendTo functionality', () => {
+describe('Bus sendTo service functionality', () => {
   test('Send event to a single service', () => {
     const bus = createTestBus()
     const event = 'event'

@@ -4,6 +4,7 @@ import { createTestBus, createTestMachine } from '../__fixtures__/test-utils'
 describe('Action - sendTo', () => {
   test('Send event to target via id', () => {
     const bus = createTestBus()
+    const { sendTo } = bus.actions
 
     const type = 'EVENT_A'
     const eventToSend = { type, data: 'foo' }
@@ -19,7 +20,7 @@ describe('Action - sendTo', () => {
           idle: {
             on: {
               SEND_TO: {
-                actions: [bus.actions.sendTo(receiverService.id, eventToSend)]
+                actions: [sendTo(receiverService.id, eventToSend)]
               }
             }
           }

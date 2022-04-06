@@ -2,7 +2,7 @@ import { interpret } from 'xstate'
 import { createTestBus, createTestMachine } from './__fixtures__/test-utils'
 
 describe('Machine listener', () => {
-  test('Register machine for specific event', () => {
+  test('Register machine for a specific event', () => {
     const bus = createTestBus()
     const event = 'event'
     const type = 'EVENT_A'
@@ -113,7 +113,7 @@ describe('Machine listener', () => {
     expect(service.state.context.event).toBe(null)
   })
 
-  test('Do not send event to a machine that do not accept particular event', () => {
+  test('Do not send event to a machine that does not accept particular event', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }
@@ -129,13 +129,13 @@ describe('Machine listener', () => {
   })
 
   describe('Unregister', () => {
-    test('Unregister machine for specific event', () => {
+    test('Unregister machine for a specific event', () => {
       const bus = createTestBus()
       const event = 'event'
       const data = { foo: 'bar' }
+
       const machine = createTestMachine('foo')
       const service = interpret(machine)
-
       service.start()
 
       const machineTwo = createTestMachine('foo')
@@ -169,34 +169,31 @@ describe('Machine listener', () => {
       expect(service.state.context.event).toBe(null)
     })
 
-    test('Remove listener and unregister machine', () => {
+    test('Unsubscribe and unregister machine', () => {
       const bus = createTestBus()
       const event = 'foo'
       const data = { foo: 'bar' }
-      const machine = createTestMachine('foo')
-      const service = interpret(machine)
-
+      const service = interpret(createTestMachine('foo'))
       service.start()
 
-      const machineTwo = createTestMachine('foo')
-      const serviceTwo = interpret(machineTwo)
+      const serviceTwo = interpret(createTestMachine('foo'))
       serviceTwo.start()
 
       const unsubscribe = bus.on('*', service, 'EVENT_A')
       unsubscribe(true)
+
       bus.emit(event, data)
 
       expect(service.state.context.event).toBe(null)
       expect(bus.getServiceById(service.id)).toBeUndefined()
     })
 
-    test('Unregister machine for specific event via returned unsubscribe function', () => {
+    test('Unregister machine for a specific event via returned unsubscribe function', () => {
       const bus = createTestBus()
       const event = 'event'
       const data = { foo: 'bar' }
       const machine = createTestMachine('foo')
       const service = interpret(machine)
-
       service.start()
 
       const machineTwo = createTestMachine('foo')
@@ -205,6 +202,7 @@ describe('Machine listener', () => {
 
       const unsubscribe = bus.on(event, service, 'EVENT_A')
       unsubscribe()
+
       bus.emit(event, data)
 
       expect(service.state.context.event).toBe(null)
@@ -231,7 +229,7 @@ describe('Machine listener', () => {
     })
   })
 
-  test('Clear all listeners for specific event', () => {
+  test('Clear all listeners for a specific event', () => {
     const bus = createTestBus()
     const event = 'event'
     const data = { foo: 'bar' }

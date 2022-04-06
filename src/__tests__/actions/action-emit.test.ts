@@ -83,6 +83,7 @@ describe('Action - emit', () => {
     const busEvent = 'bus_event'
     const serviceEventToSend = 'EVENT_A'
     const payload = { data: 'foo' }
+    const { emit } = bus.actions
 
     const receiverService = interpret(createTestMachine('receiver')).start()
     bus.on(busEvent, receiverService, serviceEventToSend)
@@ -99,7 +100,7 @@ describe('Action - emit', () => {
             on: {
               TEST: {
                 actions: [
-                  bus.actions.emit(
+                  emit(
                     (ctx) => {
                       return ctx.busEvent
                     },
