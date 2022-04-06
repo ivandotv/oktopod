@@ -14,7 +14,7 @@ export type EventPayload<TData = unknown> = {
   data: TData
 }
 
-export class Oktopod {
+export default class Oktopod {
   protected bus: ReturnType<typeof mitt> = mitt()
 
   protected serviceToEvents: Map<
