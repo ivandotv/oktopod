@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.0.0
+
+### Major Changes
+
+- 2d154a9: Make Oktopod class the default export
+
 ## 0.1.1
 
 ### Patch Changes
