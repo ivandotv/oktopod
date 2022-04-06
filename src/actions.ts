@@ -4,9 +4,14 @@ import { isFunction, resolveIds } from './utils'
 
 export function createActions(bus: Oktopod) {
   return {
+    /**
+     * Send event to Xstate service that is registered with the bus
+     * @param serviceId  - Xstate service id
+     * @param event  - event to send
+     */
     sendTo<
       TService extends
-        | Interpreter<any, any, any, any>
+        | Interpreter<any, any, any, any, any>
         | ActorRef<any> = Interpreter<any, any, any, any>
     >(
       serviceId:
@@ -14,7 +19,7 @@ export function createActions(bus: Oktopod) {
         | string[]
         | ((ctx: any, evt: any) => string | string[]),
       event: EventFrom<TService> | ((ctx: any, evt: any) => EventFrom<TService>)
-    ): any {
+    ): (ctx: any, evt: any) => void {
       return (ctx: any, evt: any) => {
         bus.sendTo(
           resolveIds(serviceId, ctx, evt),
@@ -23,13 +28,22 @@ export function createActions(bus: Oktopod) {
         )
       }
     },
+    /**
+     * Forward event to a service by id
+     * @param serviceId - Xstate service id
+     */
     forwardTo(
       serviceId: string | string[] | ((ctx: any, evt: any) => string | string[])
-    ): any {
+    ): (ctx: any, evt: any) => void {
       return (ctx: any, evt: any) => {
         bus.sendTo(resolveIds(serviceId, ctx, evt), evt)
       }
     },
+    /**
+     * Emit event to bus
+     * @param eventName - name of the even
+     * @param data - data for the event
+     */
     emit(
       eventName: string | ((ctx: any, evt: any) => string),
       data: any | ((ctx: any, evt: any) => any)
