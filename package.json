@@ -14,7 +14,6 @@
   "author": "Ivan Vlatković",
   "license": "MIT",
   "main": "./dist/prod/oktopod.js",
-  "umd": "./dist/prod/oktopod.umd.js",
   "exports": {
     "development": "./dist/dev/oktopod.esm.js",
     "import": "./dist/prod/oktopod.esm.js",
@@ -32,7 +31,7 @@
     "test": "cross-env NODE_ENV=test jest --verbose --coverage --no-cache",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:ci": "cross-env NODE_ENV=test jest --runInBand --ci --coverage --coverageDirectory=coverage",
-    "build:prod": "cross-env NODE_ENV=production microbundle --tsconfig ./tsconfig.json  --format modern,cjs,umd  --output dist/prod",
+    "build:prod": "cross-env NODE_ENV=production microbundle --tsconfig ./tsconfig.json  --format modern,cjs  --output dist/prod",
     "build:dev": "cross-env NODE_ENV=development microbundle --define process.env.NODE_ENV=development --tsconfig ./tsconfig.json --generateTypes false --format modern --output dist/dev",
     "build": "rm -rf ./dist && pnpm build:dev && pnpm build:prod",
     "type:check": "tsc --noEmit true",
