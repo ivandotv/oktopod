@@ -200,7 +200,7 @@ export class Oktopod {
     this.bus.emit(event, { event, data })
   }
 
-  register(service: Interpreter<any, any, any>): () => void {
+  register(service: Interpreter<any, any, any, any, any>): () => void {
     this._register(service)
 
     return () => {
