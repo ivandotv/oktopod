@@ -6,7 +6,7 @@ oktopod
 
 ### Classes
 
-- [Oktopod](classes/Oktopod.md)
+- [default](classes/default.md)
 
 ### Type aliases
 
@@ -33,4 +33,4 @@ oktopod
 
 #### Defined in
 
-[src/oktopod.ts:5](https://github.com/ivandotv/oktopod/blob/c5fc2ff/src/oktopod.ts#L5)
+[src/oktopod.ts:12](https://github.com/ivandotv/oktopod/blob/92c76b4/src/oktopod.ts#L12)
