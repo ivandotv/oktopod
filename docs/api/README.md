@@ -33,4 +33,4 @@ oktopod
 
 #### Defined in
 
-[src/oktopod.ts:12](https://github.com/ivandotv/oktopod/blob/529045f/src/oktopod.ts#L12)
+[src/oktopod.ts:12](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L12)
