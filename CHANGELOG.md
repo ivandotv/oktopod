@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.0.1
+
+### Patch Changes
+
+- e100209: Switch event payload data from `unknown` to `any`
+
 ## 1.0.0
 
 ### Major Changes
