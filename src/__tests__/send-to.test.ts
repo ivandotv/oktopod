@@ -58,6 +58,24 @@ describe('Bus sendTo service functionality', () => {
     expect(service.state.matches('idle')).toBe(true)
   })
 
+  test('Throw error if service is not present', () => {
+    const bus = createTestBus()
+    const event = 'event'
+    const data = { foo: 'foo' }
+
+    expect(() => {
+      bus.sendTo(
+        'does_not_exist_id',
+        {
+          type: 'EVENT_A',
+          event,
+          data
+        },
+        true
+      )
+    }).toThrowError()
+  })
+
   test('Do nothing if the service does not accepts the event', () => {
     const bus = createTestBus()
     const event = 'event'

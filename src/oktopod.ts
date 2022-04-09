@@ -297,25 +297,38 @@ export default class Oktopod {
    * Send a particular event to a particular service
    * @param serviceId - id of Xstate service
    * @param event - event to send
+   * @param strict - if true, and service to send the event is not present, event bus will throw error
    */
   sendTo<
     TService extends
       | Interpreter<any, any, any, any>
       | ActorRef<any> = Interpreter<any, any, any, any>
-  >(serviceId: string | string[], event: EventFrom<TService>): void {
+  >(
+    serviceId: string | string[],
+    event: EventFrom<TService>,
+    strict?: boolean
+  ): void {
     const ids: string[] = Array.isArray(serviceId) ? serviceId : [serviceId]
 
     ids.forEach((id) => {
       const service = this.idToService.get(id)
-
-      if (
-        service &&
-        // @ts-expect-error - find a way to narrow down event.type
-        serviceIsRunning(service, event.type) &&
-        // @ts-expect-error - find a way to narrow down event.type
-        serviceCanAcceptEvent(service, event.type)
-      ) {
-        service.send(event)
+      if (!service) {
+        const msg = `Service ${serviceId} not present`
+        if (strict) {
+          throw new Error(msg)
+        }
+        if (__DEV__) {
+          console.warn(msg)
+        }
+      } else {
+        if (
+          // @ts-expect-error - find a way to narrow down event.type
+          serviceIsRunning(service, event.type) &&
+          // @ts-expect-error - find a way to narrow down event.type
+          serviceCanAcceptEvent(service, event.type)
+        ) {
+          service.send(event)
+        }
       }
     })
   }
