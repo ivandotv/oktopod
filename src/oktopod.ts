@@ -329,7 +329,5 @@ export default class Oktopod {
         service.send(event)
       }
     })
-    // for (const id of ids) {
-    // }
   }
 }
