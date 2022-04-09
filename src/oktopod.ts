@@ -77,10 +77,7 @@ export default class Oktopod {
     send?: Pick<EventFrom<TService>, 'type'>['type']
   ): () => void | ((unregister?: boolean) => void) {
     if (isService(listener)) {
-      invariant(
-        send,
-        `When using machine as listener, please provide send type`
-      )
+      invariant(send, `machine as listener, needs send type`)
 
       return this.serviceOn(event, listener, send)
     }
