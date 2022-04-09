@@ -302,16 +302,8 @@ export default class Oktopod {
     TService extends
       | Interpreter<any, any, any, any>
       | ActorRef<any> = Interpreter<any, any, any, any>
-  >(
-    serviceId: string | string[] | (() => string[]),
-    event: EventFrom<TService>
-  ): void {
-    let ids: string[]
-    if (typeof serviceId === 'function') {
-      ids = serviceId()
-    } else {
-      ids = Array.isArray(serviceId) ? serviceId : [serviceId]
-    }
+  >(serviceId: string | string[], event: EventFrom<TService>): void {
+    const ids: string[] = Array.isArray(serviceId) ? serviceId : [serviceId]
 
     ids.forEach((id) => {
       const service = this.idToService.get(id)
