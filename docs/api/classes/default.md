@@ -39,7 +39,7 @@
 
 #### Defined in
 
-[src/oktopod.ts:40](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L40)
+[src/oktopod.ts:39](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L39)
 
 ## Properties
 
@@ -59,7 +59,7 @@ Xstate action helpers bound to the current instance
 
 #### Defined in
 
-[src/oktopod.ts:38](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L38)
+[src/oktopod.ts:37](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L37)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:18](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L18)
+[src/oktopod.ts:17](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L17)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:25](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L25)
+[src/oktopod.ts:24](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L24)
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:30](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L30)
+[src/oktopod.ts:29](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L29)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:20](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L20)
+[src/oktopod.ts:19](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L19)
 
 ## Methods
 
@@ -121,7 +121,7 @@ Clear all listeners for a specific event
 
 #### Defined in
 
-[src/oktopod.ts:223](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L223)
+[src/oktopod.ts:224](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L224)
 
 ___
 
@@ -144,7 +144,7 @@ Emit event to all listeners
 
 #### Defined in
 
-[src/oktopod.ts:238](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L238)
+[src/oktopod.ts:239](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L239)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:187](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L187)
+[src/oktopod.ts:188](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L188)
 
 ___
 
@@ -192,7 +192,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:88](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L88)
+[src/oktopod.ts:89](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L89)
 
 ___
 
@@ -222,7 +222,7 @@ Xstate service
 
 #### Defined in
 
-[src/oktopod.ts:287](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L287)
+[src/oktopod.ts:288](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L288)
 
 ___
 
@@ -247,7 +247,7 @@ true if unregistered successfully
 
 #### Defined in
 
-[src/oktopod.ts:172](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L172)
+[src/oktopod.ts:173](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L173)
 
 ___
 
@@ -282,7 +282,7 @@ function to unsubscribe
 
 #### Defined in
 
-[src/oktopod.ts:50](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L50)
+[src/oktopod.ts:49](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L49)
 
 ▸ **on**<`TService`\>(`event`, `listener`, `send`): (`unregister?`: `boolean`) => `void`
 
@@ -328,7 +328,7 @@ also unregistered from the event bus
 
 #### Defined in
 
-[src/oktopod.ts:60](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L60)
+[src/oktopod.ts:59](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L59)
 
 ___
 
@@ -364,7 +364,7 @@ function to unregister the service
 
 #### Defined in
 
-[src/oktopod.ts:248](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L248)
+[src/oktopod.ts:249](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L249)
 
 ___
 
@@ -394,7 +394,7 @@ Send a particular event to a particular service
 
 #### Defined in
 
-[src/oktopod.ts:302](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L302)
+[src/oktopod.ts:303](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L303)
 
 ___
 
@@ -415,7 +415,7 @@ ___
 
 #### Defined in
 
-[src/oktopod.ts:198](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L198)
+[src/oktopod.ts:199](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L199)
 
 ___
 
@@ -463,7 +463,7 @@ unregister function
 
 #### Defined in
 
-[src/oktopod.ts:106](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L106)
+[src/oktopod.ts:107](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L107)
 
 ___
 
@@ -485,4 +485,4 @@ Unregister service from the event bus
 
 #### Defined in
 
-[src/oktopod.ts:267](https://github.com/ivandotv/oktopod/blob/54ad5cf/src/oktopod.ts#L267)
+[src/oktopod.ts:268](https://github.com/ivandotv/oktopod/blob/14cc972/src/oktopod.ts#L268)
