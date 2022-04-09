@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { ActorRefFrom, createMachine, InterpreterFrom, spawn } from 'xstate'
+import { ActorRefFrom, createMachine, spawn } from 'xstate'
 import { createModel } from 'xstate/lib/model'
 import Oktopod, { EventPayload } from '../../oktopod'
 
 export function createTestBus() {
   return new Oktopod()
 }
-
-export type TestService = InterpreterFrom<ReturnType<typeof createTestMachine>>
 
 const childMachine = createMachine({
   initial: 'idle',
