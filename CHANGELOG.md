@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.1.1
+
+### Patch Changes
+
+- 0cc8e61: remove dependency: tiny-invariant
+
 ## 1.1.0
 
 ### Minor Changes
