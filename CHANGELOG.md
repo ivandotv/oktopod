@@ -1,5 +1,15 @@
 # oktopod
 
+## 1.1.0
+
+### Minor Changes
+
+- 4f76b5d: Add option for `sendTo` method to throw if service with a particular id is not present
+
+### Patch Changes
+
+- f5eb3eb: SendTo method should not accept function as argument
+
 ## 1.0.1
 
 ### Patch Changes
