@@ -1,5 +1,4 @@
 import mitt from 'mitt'
-import invariant from 'tiny-invariant'
 import { ActorRef, EventFrom, Interpreter } from 'xstate'
 import { createActions } from './actions'
 import {
@@ -77,7 +76,9 @@ export default class Oktopod {
     send?: Pick<EventFrom<TService>, 'type'>['type']
   ): () => void | ((unregister?: boolean) => void) {
     if (isService(listener)) {
-      invariant(send, `machine as listener, needs send type`)
+      if (!send) {
+        throw new Error('`machine listener, needs send type`')
+      }
 
       return this.serviceOn(event, listener, send)
     }

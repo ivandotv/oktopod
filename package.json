@@ -77,8 +77,7 @@
     "xstate": "^4.30.6"
   },
   "dependencies": {
-    "mitt": "^3.0.0",
-    "tiny-invariant": "^1.2.0"
+    "mitt": "^3.0.0"
   },
   "peerDependencies": {
     "xstate": "^4.30.6"
