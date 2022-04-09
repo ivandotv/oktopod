@@ -9,7 +9,7 @@ import {
   serviceIsRunning
 } from './utils'
 
-export type EventPayload<TData = unknown> = {
+export type EventPayload<TData = any> = {
   event: string
   data: TData
 }
