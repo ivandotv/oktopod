@@ -22,7 +22,7 @@ oktopod
 
 | Name | Type |
 | :------ | :------ |
-| `TData` | `unknown` |
+| `TData` | `any` |
 
 #### Type declaration
 
@@ -33,4 +33,4 @@ oktopod
 
 #### Defined in
 
-[src/oktopod.ts:12](https://github.com/ivandotv/oktopod/blob/92c76b4/src/oktopod.ts#L12)
+[src/oktopod.ts:12](https://github.com/ivandotv/oktopod/blob/529045f/src/oktopod.ts#L12)
