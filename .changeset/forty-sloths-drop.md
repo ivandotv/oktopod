@@ -1,5 +1,0 @@
----
-'oktopod': patch
----
-
-update docs
