@@ -26,8 +26,7 @@
   ],
   "scripts": {
     "lint": "eslint --fix \"src/**/\"",
-    "lint:check": "eslint \"src/**/\"",
-    "lint:ci": "pnpm lint:check",
+    "lint:ci": "eslint \"src/**/\"",
     "test": "cross-env NODE_ENV=test jest --verbose --coverage --no-cache",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:ci": "cross-env NODE_ENV=test jest --runInBand --ci --coverage --coverageDirectory=coverage",
