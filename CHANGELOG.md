@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.1.2
+
+### Patch Changes
+
+- 9dc2198: update docs
+
 ## 1.1.1
 
 ### Patch Changes
