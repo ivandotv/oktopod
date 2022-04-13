@@ -26,8 +26,7 @@
   ],
   "scripts": {
     "lint": "eslint --fix \"src/**/\"",
-    "lint:check": "eslint \"src/**/\"",
-    "lint:ci": "pnpm lint:check",
+    "lint:ci": "eslint \"src/**/\"",
     "test": "cross-env NODE_ENV=test jest --verbose --coverage --no-cache",
     "test:watch": "cross-env NODE_ENV=test jest --watch",
     "test:ci": "cross-env NODE_ENV=test jest --runInBand --ci --coverage --coverageDirectory=coverage",
@@ -35,7 +34,7 @@
     "build:dev": "cross-env NODE_ENV=development microbundle --define process.env.NODE_ENV=development --tsconfig ./tsconfig.json --generateTypes false --format modern --output dist/dev",
     "build": "rm -rf ./dist && pnpm build:dev && pnpm build:prod",
     "type:check": "tsc --noEmit true",
-    "gen:docs": "rm -rf ./docs/api && typedoc --theme markdown --readme none --excludePrivate  --excludeInternal --exclude ./src/globals.d.ts --exclude ./src/__tests__ --out docs/api ./src",
+    "gen:docs": "rm -rf ./docs/api && typedoc",
     "prepublishOnly": "pnpm build",
     "prepare": "husky install",
     "release": "pnpm run prepublishOnly && pnpm changeset publish"
