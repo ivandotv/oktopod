@@ -16,7 +16,7 @@ export function serviceIsRunning(
     /* istanbul ignore next */
     if (__DEV__) {
       console.warn(
-        `Event ${evt} not sent to service: ${service.id} because the service is not running`
+        `Event ${evt} not sent to service: ${service.id}. Service is not running`
       )
     }
 
@@ -36,7 +36,7 @@ export function serviceCanAcceptEvent(
     /* istanbul ignore next */
     if (__DEV__) {
       console.warn(
-        `Event: ${evt} not sent to service: ${service.id} because the service does not accept event.`
+        `Event: ${evt} not sent to service: ${service.id}. Service does not accept the event.`
       )
     }
 
