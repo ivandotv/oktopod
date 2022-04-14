@@ -18,13 +18,17 @@ export function createActions(bus: Oktopod) {
         | string
         | string[]
         | ((ctx: any, evt: any) => string | string[]),
-      event: EventFrom<TService> | ((ctx: any, evt: any) => EventFrom<TService>)
+      event:
+        | EventFrom<TService>
+        | ((ctx: any, evt: any) => EventFrom<TService>),
+      strict?: boolean
     ): (ctx: any, evt: any) => void {
       return (ctx: any, evt: any) => {
         bus.sendTo(
           resolveIds(serviceId, ctx, evt),
           // @ts-expect-error - xstate ResolveEvent interferes with assertion
-          isFunction(event) ? event(ctx, evt) : event
+          isFunction(event) ? event(ctx, evt) : event,
+          strict
         )
       }
     },
@@ -33,10 +37,14 @@ export function createActions(bus: Oktopod) {
      * @param serviceId - Xstate service id
      */
     forwardTo(
-      serviceId: string | string[] | ((ctx: any, evt: any) => string | string[])
+      serviceId:
+        | string
+        | string[]
+        | ((ctx: any, evt: any) => string | string[]),
+      strict?: boolean
     ): (ctx: any, evt: any) => void {
       return (ctx: any, evt: any) => {
-        bus.sendTo(resolveIds(serviceId, ctx, evt), evt)
+        bus.sendTo(resolveIds(serviceId, ctx, evt), evt, strict)
       }
     },
     /**

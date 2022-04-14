@@ -123,4 +123,29 @@ describe('Action - forwardTo', () => {
     })
     expect(receiverServiceTwo.state.matches('state_a')).toBe(true)
   })
+
+  test('Throw if service is not registered', () => {
+    const bus = createTestBus()
+    const { forwardTo } = bus.actions
+    const eventToSend = { type: 'EVENT_A', data: 'foo' }
+    const receiverId = 'some_id'
+
+    const senderService = interpret(
+      createMachine({
+        initial: 'idle',
+        context: {},
+        states: {
+          idle: {
+            on: {
+              EVENT_A: {
+                actions: [forwardTo(receiverId, true)]
+              }
+            }
+          }
+        }
+      })
+    ).start()
+
+    expect(() => senderService.send(eventToSend)).toThrowError(/not present/)
+  })
 })

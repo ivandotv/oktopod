@@ -16,10 +16,11 @@ Play with a simple demo on [codesandbox](https://codesandbox.io/s/xstate-event-b
   - [Registering the service with the event bus](#registering-the-service-with-the-event-bus)
   - [Event bus action helpers](#event-bus-action-helpers)
     - [sendTo](#sendto)
-    - [emit](#emit)
     - [forwardTo](#forwardto)
+    - [emit](#emit)
 - [Register Service for event bus events](#register-service-for-event-bus-events)
 - [Simple function listeners](#simple-function-listeners)
+  - [Unregister all listeners](#unregister-all-listeners)
 - [API docs](#api-docs)
 - [License](#license)
 
@@ -73,7 +74,7 @@ eventBus.getServiceById(service.id)
 
 Other services can send events directly to the registered service, all they need is access to the event bus.
 
-In the next example, service (`machineTwo`) has access to the event bus, and when the service receives the `SEND_HELLO` event, it will send the `HELLO` event with data `{foo:'bar'}` to the service with the `id` of `machineOne` (which is registered with the event bus)
+In the next example, the service (`machineTwo`) has access to the event bus, and when the service receives the `SEND_HELLO` event, it will send the `HELLO` event with data `{foo:'bar'}` to the service with the `id` of `machineOne` (which is registered with the event bus)
 
 ```ts
 export function machineTwo(eventBus: Oktopod) {
@@ -131,7 +132,7 @@ Another way to send the even to the machine is by using the event bus directly.
 eventBus.register(serviceOne)
 
 /*
-if useStrict is true, event bus will throw if
+if useStrict is true, the event bus will throw if
 service is not present or does not accept the event
  */
 const useStrict = true
@@ -194,24 +195,12 @@ sendTo(
 )
 // OR
 // combination of the above
+
+//strict mode
+sendTo('machineOne', {}, true)
 ```
 
-#### emit
-
-`emit` Emits the event on the event bus and any listeners that are registered for that specific event will be triggered.
-
-```ts
-emit('HELLO_WORLD', { foo: 'bar' })
-// OR
-emit(
-  (ctx, evt) => {
-    return 'HELLO_WORLD'
-  },
-  (ctx: any) => {
-    return { foo: 'bar' }
-  }
-)
-```
+In `strict` mode (third argument), the event bus will an throw error if the service that is being sent to is not registered with the event bus.
 
 #### forwardTo
 
@@ -240,6 +229,7 @@ You can use it like this:
 
 ```ts
 forwardTo('machineOne')
+
 // or
 forwardTo(['machineOne', 'machineTwo', 'machineThree'])
 // or
@@ -248,6 +238,27 @@ forwardTo((ctx, evt) => {
   // or
   return ['machineOne', 'machineTwo', 'machineThree']
 })
+//strict mode
+forwardTo('machineOne', true)
+```
+
+In `strict` mode, the event bus will throw an error if the service that is being forwarded to is not registered with the event bus.
+
+#### emit
+
+`emit` Emits the event on the event bus and any listeners that are registered for that specific event will be triggered.
+
+```ts
+emit('HELLO_WORLD', { foo: 'bar' })
+// OR
+emit(
+  (ctx, evt) => {
+    return 'HELLO_WORLD'
+  },
+  (ctx: any) => {
+    return { foo: 'bar' }
+  }
+)
 ```
 
 ## Register Service for event bus events
