@@ -1,5 +1,17 @@
 # oktopod
 
+## 1.2.0
+
+### Minor Changes
+
+- 22ea2cc: Add `strict` mode to sendTo and forwardTo actions.
+
+  In `strict` mode event bus will throw if the service is not registered.
+
+### Patch Changes
+
+- 89fb85e: reword warning messages
+
 ## 1.1.2
 
 ### Patch Changes
