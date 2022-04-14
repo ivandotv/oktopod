@@ -73,7 +73,7 @@ eventBus.getServiceById(service.id)
 
 Other services can send events directly to the registered service, all they need is access to the event bus.
 
-In the next example, I'm going to create a service (`machineTwo`) that will have access to the event bus, and when the service receives the `SEND_HELLO` event, it will send the `HELLO` event with data `{foo:'bar'}` to the service with the `id` of `machineOne` (which is registered with the event bus)
+In the next example, service (`machineTwo`) has access to the event bus, and when the service receives the `SEND_HELLO` event, it will send the `HELLO` event with data `{foo:'bar'}` to the service with the `id` of `machineOne` (which is registered with the event bus)
 
 ```ts
 export function machineTwo(eventBus: Oktopod) {
@@ -123,6 +123,26 @@ const serviceTwo = interpret(machineTwo(eventBus)).start()
 eventBus.register(serviceOne)
 
 serviceTwo.send({ type: 'SEND_HELLO' })
+```
+
+Another way to send the even to the machine is by using the event bus directly.
+
+```ts
+eventBus.register(serviceOne)
+
+/*
+if useStrict is true, event bus will throw if
+service is not present or does not accept the event
+ */
+const useStrict = true
+eventBus.sendTo(
+  service.id,
+  {
+    type: 'EVENT_A',
+    data
+  },
+  useStrict
+)
 ```
 
 Few very important things to keep in mind:
@@ -301,7 +321,15 @@ unregister()
 eventBus.off('hello', listener)
 
 //trigger the listener
-bus.emit('hello', { foo: 'bar' })
+eventBus.emit('hello', { foo: 'bar' })
+```
+
+### Unregister all listeners
+
+You can unregister all listeners for a specific event. This will clear all listeners (services and functions).
+
+```ts
+eventBus.clear('event_name')
 ```
 
 ## API docs
