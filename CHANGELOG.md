@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.2.1
+
+### Patch Changes
+
+- 5005e68: update docs
+
 ## 1.2.0
 
 ### Minor Changes
