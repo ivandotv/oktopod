@@ -1,4 +1,6 @@
-# Oktopod - Event Bus for Xstate Machines
+# Oktopod
+
+Event Bus for Xstate Machines
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ivandotv/oktopod/Test)
 ![Codecov](https://img.shields.io/codecov/c/gh/ivandotv/oktopod)
