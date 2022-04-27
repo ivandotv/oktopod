@@ -77,7 +77,7 @@ export default class Oktopod {
   ): () => void | ((unregister?: boolean) => void) {
     if (isService(listener)) {
       if (!send) {
-        throw new Error('`machine listener, needs send type`')
+        throw new Error('machine listener, needs send type')
       }
 
       return this.serviceOn(event, listener, send)
