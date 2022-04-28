@@ -1,5 +1,12 @@
 # oktopod
 
+## 1.2.2
+
+### Patch Changes
+
+- 873461e: Update packages, and create `.mjs` file builds
+- 8e70015: docs: add link to bundlephobia
+
 ## 1.2.1
 
 ### Patch Changes
