@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.2.3
+
+### Patch Changes
+
+- 8b66ec2: switch package to type module, and update build process accordingly
+
 ## 1.2.2
 
 ### Patch Changes
