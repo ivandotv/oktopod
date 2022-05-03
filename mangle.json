@@ -1,0 +1,10 @@
+{
+  "minify": {
+    "mangle": {
+      "keep_fnames": true
+    },
+    "compress": {
+      "keep_fnames": true
+    }
+  }
+}
