@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.2.4
+
+### Patch Changes
+
+- 21bf8b9: Enable action names in the xstate visualizer
+
 ## 1.2.3
 
 ### Patch Changes
