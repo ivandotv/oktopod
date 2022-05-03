@@ -23,7 +23,7 @@ export function createActions(bus: Oktopod) {
         | ((ctx: any, evt: any) => EventFrom<TService>),
       strict?: boolean
     ): (ctx: any, evt: any) => void {
-      return (ctx: any, evt: any) => {
+      return function sendTo(ctx: any, evt: any) {
         bus.sendTo(
           resolveIds(serviceId, ctx, evt),
           // @ts-expect-error - xstate ResolveEvent interferes with assertion
@@ -43,7 +43,7 @@ export function createActions(bus: Oktopod) {
         | ((ctx: any, evt: any) => string | string[]),
       strict?: boolean
     ): (ctx: any, evt: any) => void {
-      return (ctx: any, evt: any) => {
+      return function forwardTo(ctx: any, evt: any) {
         bus.sendTo(resolveIds(serviceId, ctx, evt), evt, strict)
       }
     },
@@ -56,7 +56,7 @@ export function createActions(bus: Oktopod) {
       eventName: string | ((ctx: any, evt: any) => string),
       data: any | ((ctx: any, evt: any) => any)
     ): any {
-      return (ctx: any, evt: any) => {
+      return function emit(ctx: any, evt: any) {
         bus.emit(
           isFunction(eventName) ? eventName(ctx, evt) : eventName,
           isFunction(data) ? data(ctx, evt) : data
