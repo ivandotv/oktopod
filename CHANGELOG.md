@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.2.5
+
+### Patch Changes
+
+- 635b0c0: Disable mangling of function names. Terser is mangling function names, and Xstate visualizer can't read action (function) names
+
 ## 1.2.4
 
 ### Patch Changes
