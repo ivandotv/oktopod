@@ -55,21 +55,21 @@
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-typescript": "^7.16.7",
     "@changesets/cli": "^2.22.0",
-    "@types/jest": "^27.4.1",
-    "@types/node": "^17.0.30",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
-    "@typescript-eslint/parser": "^5.21.0",
+    "@types/jest": "^27.5.0",
+    "@types/node": "^17.0.31",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
     "babel-plugin-dev-expression": "^0.2.3",
     "babel-plugin-transform-define": "^2.0.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.14.0",
+    "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.5",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-tsdoc": "^0.2.16",
     "husky": "^7.0.4",
-    "jest": "^28.0.3",
+    "jest": "^28.1.0",
     "jest-mock-console": "^1.2.3",
     "jest-watch-typeahead": "^1.1.0",
     "lint-staged": "^12.4.1",
@@ -82,9 +82,9 @@
   },
   "dependencies": {
     "mitt": "^3.0.0",
-    "xstate": "^4.31.0"
+    "xstate": "^4.32.0"
   },
   "peerDependencies": {
-    "xstate": "^4.31.0"
+    "xstate": "^4.32.0"
   }
 }
