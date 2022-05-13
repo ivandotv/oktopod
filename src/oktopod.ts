@@ -8,6 +8,9 @@ import {
   serviceIsRunning
 } from './utils'
 
+/**
+ * Event data that will be delivered to listeners
+ */
 export type EventPayload<TData = any> = {
   event: string
   data: TData
