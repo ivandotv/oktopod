@@ -1,5 +1,11 @@
 # oktopod
 
+## 1.2.6
+
+### Patch Changes
+
+- bcd5700: add more code comments
+
 ## 1.2.5
 
 ### Patch Changes
