@@ -18,6 +18,8 @@ oktopod
 
 Ƭ **EventPayload**<`TData`\>: `Object`
 
+Event data that will be delivered to listeners
+
 #### Type parameters
 
 | Name | Type |
@@ -33,4 +35,4 @@ oktopod
 
 #### Defined in
 
-[src/oktopod.ts:11](https://github.com/ivandotv/oktopod/blob/8682c30/src/oktopod.ts#L11)
+[src/oktopod.ts:14](https://github.com/ivandotv/oktopod/blob/b0ed172/src/oktopod.ts#L14)
