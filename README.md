@@ -2,8 +2,8 @@
 
 Event Bus for Xstate Machines
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ivandotv/oktopod/Test)
-![Codecov](https://img.shields.io/codecov/c/gh/ivandotv/oktopod)
+[![Test](https://github.com/ivandotv/oktopod/actions/workflows/CI.yml/badge.svg)](https://github.com/ivandotv/oktopod/actions/workflows/CI.yml)
+[![Codecov](https://img.shields.io/codecov/c/gh/ivandotv/oktopod)](https://app.codecov.io/gh/ivandotv/oktopod)
 [![GitHub license](https://img.shields.io/github/license/ivandotv/oktopod)](https://github.com/ivandotv/oktopod/blob/main/LICENSE)
 
 Small ([~1KB](https://bundlephobia.com/package/oktopod)) event bus implementation that is primarily made for sending events between Xstate services that are completely decoupled, and it also supports regular listeners (functions).
