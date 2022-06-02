@@ -18,7 +18,7 @@ specifiers:
   eslint-plugin-prettier: ^4.0.0
   eslint-plugin-promise: ^6.0.0
   eslint-plugin-tsdoc: ^0.2.16
-  husky: ^7.0.4
+  husky: ^8.0.0
   jest: ^28.1.0
   jest-mock-console: ^1.2.3
   jest-watch-typeahead: ^1.1.0
@@ -54,7 +54,7 @@ devDependencies:
   eslint-plugin-prettier: 4.0.0_440b30a60bbe5bb6e3ad0057150b2782
   eslint-plugin-promise: 6.0.0_eslint@8.15.0
   eslint-plugin-tsdoc: 0.2.16
-  husky: 7.0.4
+  husky: 8.0.0
   jest: 28.1.0_@types+node@17.0.31
   jest-mock-console: 1.2.3_jest@28.1.0
   jest-watch-typeahead: 1.1.0_jest@28.1.0
@@ -357,6 +357,8 @@ packages:
     resolution: {integrity: sha512-n2Q6i+fnJqzOaq2VkdXxy2TCPCWQZHiCo0XqmrCvDWcZQKRyZzYi4Z0yxlBuN0w+r2ZHmre+Q087DSrw3pbJDQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
+    dependencies:
+      '@babel/types': 7.17.10
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/7.16.7_@babel+core@7.17.10:
@@ -3950,9 +3952,9 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: true
 
-  /husky/7.0.4:
-    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
-    engines: {node: '>=12'}
+  /husky/8.0.0:
+    resolution: {integrity: sha512-4qbE/5dzNDNxFEkX9MNRPKl5+omTXQzdILCUWiqG/lWIAioiM5vln265/l6I2Zx8gpW8l1ukZwGQeCFbBZ6+6w==}
+    engines: {node: '>=14'}
     hasBin: true
     dev: true
 
