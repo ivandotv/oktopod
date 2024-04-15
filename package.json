@@ -82,9 +82,9 @@
   },
   "dependencies": {
     "mitt": "^3.0.0",
-    "xstate": "^4.32.0"
+    "xstate": "^5.0.0"
   },
   "peerDependencies": {
-    "xstate": "^4.32.0"
+    "xstate": "^5.0.0"
   }
 }
